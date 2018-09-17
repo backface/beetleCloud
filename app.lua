@@ -32,5 +32,6 @@ require 'social'
 require 'static'
 require 'admin'
 require 'redirects'
+require 'page'
 
 return app
