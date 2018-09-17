@@ -220,12 +220,25 @@ app:match('login', '/api/users/login', respond_to({
         local user = Users:find(self.params.username)
         local comesFromWebClient = ngx.var.http_referer:match('/run') == nil
 
-        if (user == nil) then
+		-- login via email - needs cleanup of user table, too many duplicate emails
+        --if (user == nil) then
+		--	local rUsers = Model:extend('users', {
+		--		primary_key = { 'email'}
+		--	})
+		--	user = rUsers:find(self.params.username)
+        --end
+        
+		if (user == nil) then
+			local rUsers = Model:extend('users', {
+				primary_key = { 'email'}
+			})
+			local user = rUsers:find(self.params.email)
+
             if comesFromWebClient then
                 return { redirect_to = '/login?fail=true&reason=No%20such%20user' }
             else
                 return errorResponse('invalid username')
-            end
+            end    
         --elseif (bcrypt.verify(self.params.password, user.password)) then
         elseif (unistd.crypt(self.params.password, salt) == user.password) then
 			if not user.confirmed then
@@ -247,7 +260,7 @@ app:match('login', '/api/users/login', respond_to({
             end
         else
             if comesFromWebClient then
-                return { redirect_to = '/login?fail=true' }
+                return { redirect_to = '/login?fail=true&reason=invalid%20password' }
             else
                 return errorResponse('invalid password')
             end
