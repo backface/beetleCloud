@@ -135,7 +135,8 @@ app:get('/users/:username/projects/:projectname', function(self)
         })
 
 		self.page_title =  self.params.projectname
-
+		
+		
         return { render = 'project' }
     else
         return { render = 'notfound' }

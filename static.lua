@@ -37,6 +37,36 @@ app:get('/run', function(self)
 end)
 
 
+app:get('/privacy', function(self)
+	self.page_title = "Privacy Policy"
+    return { render = 'pages/privacy' }
+end)
+
+app:get('/campaign', function(self)
+	self.page_title = "TurtleStitch goes Crowdfunding!"
+    return { render = 'pages/campaign' }
+end)
+
+
+app:get('/de/support', function(self)
+	self.page_title = "TurtleStitch goes Crowdfunding!"
+    return { render = 'pages/support_de' }
+end)
+
+app:get('/support_de', function(self)
+	self.page_title = "TurtleStitch goes Crowdfunding!"
+    return { render = 'pages/support_de' }
+end)
+
+app:get('/kickstarter', function(self)
+	self.page_title = "TurtleStitch goes Crowdfunding!"
+    return { redirect_to = 'https://www.kickstarter.com/projects/1206849453/turtlestitch?ref=aip0qq' }
+end)
+                
+
+
+
+
 --app:get('/run', function(self)
 --    return { render = 'pages/run' }
 --end)

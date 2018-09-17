@@ -3,6 +3,12 @@ function buildHyperlinks (text) {
 		'<a href="$1" target="_blank">$1</a>');
 }
 
+function nl2br (text) {
+	return text.replace(/\n/g,
+		'<br ?>');
+}
+
+
 $(document).ready(function(){
 	$(".logo").css("transform","rotate(" + Math.random() * 360 + "deg)");
 	//$(".icon-run").css("transform","rotate(" + Math.random() * 360 + "deg)");
@@ -10,5 +16,10 @@ $(document).ready(function(){
 		$(".icon-run").css("transform","rotate(" + Math.random() * 360 + "deg)");
 		window.setTimeout( rot_icon, 3000 + Math.random() * 10000);
 	}
-	rot_icon();
+	
+	$("#close").click ( function(event) {
+		$(".kickstarter").hide();
+		event.preventDefaults();
+	});
+	
 });

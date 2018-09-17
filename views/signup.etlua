@@ -61,11 +61,19 @@
 	<div class="form-group has-feedback">
 	<label for="tos" class="control-label col-md-3"></label>	  
 	  <div class="input-group">
-		 
 		<input id="tos" name="tos" type="checkbox" required > I have read and agree to the <a target="_blank" href="/tos">Terms of Service</a>
 		<span class="glyphicion form-control-feedback"></span>
 	  </div>	  
 	</div> 
+
+	<div class="form-group has-feedback">
+	<label for="tos" class="control-label col-md-3"></label>	  
+	  <div class="input-group">
+		<input id="tos" name="tos" type="checkbox" required > I have read and agree to the <a target="_blank" href="/privacy">Privacy Policy</a>
+		<span class="glyphicion form-control-feedback"></span>
+	  </div>	  
+	</div> 
+
 
   <div class="form-group">
 	<div class="col-md-4">  

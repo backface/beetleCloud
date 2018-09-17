@@ -25,8 +25,9 @@ function uploadImage (file) {
     ajax.open('POST', '/api' + window.location.pathname + '/altimage' , true);
     ajax.onreadystatechange = function() {
         if (ajax.readyState == 4 && ajax.status == 200) {
-            setAlternateImageSrc();
+            setAlternateImageSrc();            
             featureImage(true);
+            window.location.reload();
         }
     };
 
@@ -45,7 +46,7 @@ function featureImage (doFeatureIt) {
             sortThumbnails();
         }
     };
-    ajax.open('GET', '/api' + window.location.pathname + '/altimage?featureImage=' + doFeatureIt , true);
+    ajax.open('GET', '/api' + window.location.pathname + '/altimage?featureimage=' + doFeatureIt , true);
     ajax.send();
 }
 
@@ -139,6 +140,8 @@ setAlternateImageSrc();
 sortThumbnails();
 
 document.getElementsByClassName('notes')[0].innerHTML = (buildHyperlinks(document.getElementsByClassName('notes')[0].innerHTML));
+document.getElementsByClassName('notes')[0].innerHTML = (nl2br(document.getElementsByClassName('notes')[0].innerHTML));
+
 
 
 function getComments (username, projectname) {

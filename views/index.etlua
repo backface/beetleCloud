@@ -1,22 +1,27 @@
 
+
 <h1 style="text-align:center">Turtlestitch - Coded Embroidery</h1>
+
 
 
 <% render("views/pages/index_features") %>
 
-			
+
 <div class="index-run">
 	<p><a href="/run" title="run"><img class="icon-run" width="100" src="/static/img/turtle-run.png" alt="run" /></a>
-		<a class="btn btn-lg btn-run" href="run" role="button">Run TurtleStich!</a>
+		<a class="btn btn-lg btn-run" href="run" role="button">Run TurtleStitch!</a>
 	</p><br />
 </div>
 
 
 <h2 style="text-align:center">Code! .. Draw! .. Stitch!</h2>
 	
+	<div>
 <%
 	render("views/carousel", { collection = 'tag', title = 'Featured', tag = 'Featured'})
 	render("views/carousel", { collection = 'newest', title = 'Newest' })
 	render("views/carousel", { collection = 'tag', title = 'Getting Started', tag = 'Getting Started'})
 	render("views/carousel", { collection = 'popular', title = 'Popular' })
 %>
+</div>
+

@@ -16,7 +16,7 @@
 	<link href="/static/lib/slick-carousel/slick/slick.css" rel="stylesheet" />
 	<link href="/static/lib/slick-carousel/slick/slick-theme.css" rel="stylesheet" />
 	<link href="/static/css/turtlestitch.css" rel="stylesheet" />
-
+	
 	<script src="/static/lib/jquery/dist/jquery.min.js"></script>
 	<script src="/static/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="/static/lib/bootbox.js/bootbox.js"></script>
@@ -36,6 +36,7 @@
 
 <% render("views/footer") %>
 <% render("views/tracking") %>
+
 
 </body>
 </html>

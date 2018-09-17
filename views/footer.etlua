@@ -1,5 +1,19 @@
+
+
 <footer class="footer">
+
+
+
 	<div class="container">
+	
+		
+	
+<div class="award" style="position:relative;top:-100px;width:160px;right:140px;height:0px;z-index:3000; transform: rotate(-30deg);">
+	<a href="https://open-educational-resources.de/veranstaltungen/17/award/oer-award-2017-laudatio-bildungsbereich-great-wide-open/" title="OER-Award 2017">
+		<img width="160" src="/static/img/badge_preistraeger_2017.png" alt="OER-Award 2017" title="OER-Award 2017"/>
+	</a>
+</div>
+
 	<div class="row">
 		<div class="col-sm-1"></div>
 		<div class="col-sm-4">
@@ -24,4 +38,7 @@
 		</div>
 	</div>
 	</div>
+
+
  </footer>
+

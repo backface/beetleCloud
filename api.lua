@@ -568,7 +568,7 @@ app:match('alternate_image', '/api/users/:username/projects/:projectname/altimag
             return err.nonexistentProject
         end
 
-        if (self.params.featureImage) then
+        if (self.params.featureimage) then
             -- we got the featureImage parameter, meaning we want to change the featured image
             -- for this project
 

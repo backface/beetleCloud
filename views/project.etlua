@@ -58,8 +58,8 @@
                             property = 'notes'
                     })
                   else %>
-                      <pre class="publ"><%= project.notes ~= '' and project.notes or 'This project has no notes.' %>
-                      </pre>
+                      <%= project.notes ~= '' and project.notes or 'This project has no notes.' %>
+                      
                 <% end %>
             </div>
             <br />
@@ -84,8 +84,8 @@
 							<li>
 							<% for k,v in pairs(project.likers) do %>
 								<a href="/users/<%= v.liker %>">
-								 <img width='24' height='24' class="gravatar" alt=""
-									src="http://www.gravatar.com/avatar/<%= v.gravatar %>?s=24&d=http%3A%2F%2Fbeta.turtlestitch.org%2Fstatic%2Fimg%2Fturtle.png" />
+								 <img width='24' height='24' class="gravatar img-circle" alt=""
+									src="http://www.gravatar.com/avatar/<%= v.gravatar %>?s=24&d=http%3A%2F%2Fwww.turtlestitch.org%2Fstatic%2Fimg%2Fturtle.png" />
 								<%= v.liker %>
 								</a>
 							<% end %>
