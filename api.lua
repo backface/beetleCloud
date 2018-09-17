@@ -222,12 +222,19 @@ app:match('login', '/api/users/login', respond_to({
 
         if (user == nil) then
             if comesFromWebClient then
-                return { redirect_to = '/login?fail=true' }
+                return { redirect_to = '/login?fail=true&reason=No%20such%20user' }
             else
                 return errorResponse('invalid username')
             end
         --elseif (bcrypt.verify(self.params.password, user.password)) then
         elseif (unistd.crypt(self.params.password, salt) == user.password) then
+			if not user.confirmed then
+				if comesFromWebClient then
+					return { redirect_to = '/login?fail=true&reason=unconfirmed%20user' }
+				else
+					return errorResponse('user unconfirmed')
+				end
+			end
             self.session.username = user.username
             self.session.email = user.email
             self.session.gravatar = md5.sumhexa(user.email)
@@ -292,26 +299,79 @@ app:match('new_user', '/api/users/new', respond_to({
 
         if (Users:find(self.params.username)) then
             if (comesFromWebClient) then
-                return { redirect_to = '/signup?fail=true&reason=Username%20already%20exists' }
+                return { redirect_to = '/signup?fail=true&reason=Username%%20already%20exists' }
             else
-                return errorResponse('a user with this username already exists')
+                return errorResponse('a user with this email or username already exists')
             end
         end
 
-        Users:create({
+        local rUsers = Model:extend('users', {
+            primary_key = { 'email'}
+        })
+        
+        if (rUsers:find(self.params.email)) then
+            if (comesFromWebClient) then
+                return { redirect_to = '/signup?fail=true&reason=E-mail%%20already%20exists' }
+            else
+                return errorResponse('a user with this email or username already exists')
+            end
+        end
+        
+        user = Users:create({
             username = self.params.username,
             --password = bcrypt.digest(self.params.password, 11),
             password = unistd.crypt(self.params.password, salt),
             email = self.params.email,
             isadmin = false,
-            joined = db.format_date()
+            joined = db.format_date(),
+            confirmed = false
         })
+        
+        reset_code = md5.sumhexa(string.reverse(tostring(socket.gettime() * 10000)))
+            local options = {reset_code = reset_code}
+            user:update(options)
+            ok, err = send_mail(self.params.email, "Confirm your TurtleStitch account",
+                "Welcome to TurtleStitch, \n\n"
+                .. "Thank you for signing up with TurtleStitch. Please confirm and activate your new account by following this link:\n\n"
+                .. self:build_url(self:url_for("confirm_user", { reset_code = reset_code }))
+                .. "/n/nIf you do not verify your account within the next 24 hours, it will be schedules for deletion.\n"
+                .. config.mail_footer
+            )
+            if not ok then
+                self.fail = true
+                self.message = "Sending E-Mail failed: " .. err
+            else
+                self.success = true
+            end
 
         if (comesFromWebClient) then
             return { redirect_to = '/user_created' }
         else
             return jsonResponse({ text = 'User ' .. self.params.username .. ' created' })
         end
+    end
+}))
+
+app:match("confirm_user", "/confirm_user/:reset_code", respond_to({
+    OPTIONS = cors_options,
+    GET = function(self)
+        local rUser = Model:extend('users', {
+            primary_key = { 'reset_code'}
+        })
+        local user = rUser:find(self.params.reset_code);
+        if (not user) then
+            self.page_title = "Failed: Confirm user"
+            self.fail = true
+            self.message = "Your code is invalid."
+        else
+            self.page_title = "Confirm User"
+            options = {
+                confirmed = true,
+                reset_code = ""
+            }
+            user:update(options)       
+        end
+        return { render = 'user_confirmed' }
     end
 }))
 

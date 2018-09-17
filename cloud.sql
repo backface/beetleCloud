@@ -99,7 +99,8 @@ CREATE TABLE users (
 	isadmin boolean,
 	reset_code text,
 	notify_comment boolean default true,
-	notify_like boolean default true
+	notify_like boolean default true,
+	confirmed boolean default true
 );
 
 CREATE SEQUENCE users_id_seq
