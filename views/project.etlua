@@ -91,7 +91,7 @@
 
 			<% if visitor and visitor.isadmin then %>
 
-			<a class="betalink" href="/beta#cloud:Username=<%= util.escape(project.username) %>&ProjectName=<%= util.escape(project.projectname) %>">Run in wheezy needle (Testing only)</a>
+			<a class="betalink" href="/beta#cloud:Username=<%= util.escape(project.username) %>&ProjectName=<%= util.escape(project.projectname) %>">Open in Wheezy Needle (Alpha/Beta Testing!)</a>
 
 			<% end %>
 
