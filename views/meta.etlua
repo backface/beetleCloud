@@ -12,7 +12,7 @@
 	<meta property="og:url" content="<%= build_url(ngx.var.request_uri) %>"/>
 	<meta property="og:type" content="website"/>
 	<meta property="og:site_name" content="<%= page_title or "" %><% if (page_title) then %> / <% end %>TurtleStitch - Coded Embroidery" />
-	<meta property="og:image" content="<%= project ~= nil and project.thumbnail or build_url("/static/img/slide1.png") %>"/>
+	<meta property="og:image" content="<% if project ~= nil then %><%= build_url("/api/users/" .. project.username .. "/projects/" .. project.projectname .. "/thumblink") %><% else %> <%= build_url("/static/img/slide1.png") %><% end %>"/>
 	<meta property="og:image:width" content="1099" />
 	<meta property="og:image:height" content="328" />
 

@@ -47,7 +47,6 @@
 		<div class="col-md-8">
             <span class="author">by <a href="/users/<%= util.escape(project.username) %>"><%- project.username %></a></span>
 
-            <h3>Project notes</h3>
 
             <div class="notes">
                 <% if (project.username == session.username) then
@@ -62,10 +61,39 @@
                       
                 <% end %>
             </div>
-            <br />
 
             <a class="btn btn-primary"  href="/run#cloud:Username=<%= util.escape(project.username) %>&ProjectName=<%= util.escape(project.projectname) %>">Open Project</a>
 
+            <div class="dropdown social" style="display:inline">
+				<button class="btn btn-default dropdown-toggle" type="button" id="sharebutton" data-toggle="dropdown">
+					<span class="glyphicon glyphicon-share" aria-hidden="true"></span> Share
+				</button>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="sharebutton">
+					<li role="presentation">
+					  <a role="menuitem" tabindex="-1" target="_blank" href="https://twitter.com/home?status=<%= util.escape(project.projectname .. " on TurtleStitch: ") .. build_url(ngx.var.request_uri) %>">
+						<i class="fa fa-twitter fa-fw"></i>
+						Share on Twitter
+					  </a>
+					</li>
+					<li role="presentation">
+					  <a role="menuitem" tabindex="-1" target="_blank" href="http://www.facebook.com/share.php?s=100&p[title]=<%= util.escape(project.projectname .. " on TurtleStitch: ")%>&p[url]=<%= build_url(ngx.var.request_uri) %>">
+						<i class="fa fa-facebook-official fa-fw"></i> Share on Facebook
+					  </a>
+					</li>
+					<li role="presentation">
+					<a role="menuitem" tabindex="-1" href="mailto:?subject=<%= util.escape(project.projectname .. "on Turtlestitch") %>%&amp;
+						body=<%= util.escape("Check out:\n" .. project.projectname .. "on TurtleStitch\n") .. build_url(ngx.var.request_uri) %>">
+						<i class="fa fa-envelope-o fa-fw"></i> Send by E-mail
+					  </a>
+					</li>
+				</ul>
+			</div>
+
+			<% if visitor and visitor.isadmin then %>
+
+			<a class="betalink" href="/beta#cloud:Username=<%= util.escape(project.username) %>&ProjectName=<%= util.escape(project.projectname) %>">Run in wheezy needle (Testing only)</a>
+
+			<% end %>
 
             <hr />
             <div class="row stats">

@@ -408,7 +408,6 @@ img.fluid {
 }
 
 
-
 .clickable {
     cursor: pointer;
 }
@@ -425,6 +424,15 @@ img.fluid {
 
 }
 
+.social a {
+	text-decoration:none
+}
+
+.betalink {
+	font-size: .8em;
+	margin-left:20px;
+	color:#a0a0a0;
+}
 
 #user-grid .user-grid-item {padding:0.8em 0}
 
