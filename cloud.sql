@@ -73,7 +73,10 @@ CREATE TABLE projects (
     shared timestamp with time zone,
     views integer,
     imageisfeatured boolean,
-	admin_tags text
+	admin_tags text,
+	origCreator text,
+	origName text,
+	remixHistory text
 );
 
 CREATE SEQUENCE projects_id_seq
