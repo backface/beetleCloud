@@ -82,7 +82,7 @@
 					</li>
 					<li role="presentation">
 					<a role="menuitem" tabindex="-1" href="mailto:?subject=<%= util.escape(project.projectname .. "on Turtlestitch") %>%&amp;
-						body=<%= util.escape("Check out:\n" .. project.projectname .. "on TurtleStitch\n") .. build_url(ngx.var.request_uri) %>">
+						body=<%= util.escape("Take a look at\n" .. project.projectname .. " on TurtleStitch\n") .. build_url(ngx.var.request_uri) %>">
 						<i class="fa fa-envelope-o fa-fw"></i> Send by E-mail
 					  </a>
 					</li>
@@ -172,15 +172,12 @@
 					</div>
                 </div>
             <% end %>
-        </div>
-</div>
+            
+ 
 
 
-<div class="spacer">&nbsp;</div>
+		<div class="spacer">&nbsp;</div>
 
-<div class="row">
-	<div class="col-md-4"></div>
-	<div class="col-md-8">
 
 		<div class="comments">
 			<h4><i class="fa fa-comments" aria-hidden="true"></i>

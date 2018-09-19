@@ -383,7 +383,7 @@ app:match('new_user', '/api/users/new', respond_to({
                 "Welcome to TurtleStitch, \n\n"
                 .. "Thank you for signing up with TurtleStitch. Please confirm and activate your new account by following this link:\n\n"
                 .. self:build_url(self:url_for("confirm_user", { reset_code = reset_code }))
-                .. "/n/nIf you do not verify your account within the next 24 hours, it will be schedules for deletion.\n"
+                .. "\n\nIf you do not verify your account within the next 24 hours, it will be scheduled for deletion.\n"
                 .. config.mail_footer
             )
             if not ok then

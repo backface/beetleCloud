@@ -1,7 +1,16 @@
+
+<h1>Create an account</h1>
 <% if (params.fail) then %>
-    <h1 class="fail"><i class="glyph fa fa-thumbs-o-down"></i> Account creation failed: <%= params.reason %></h1>
+	<div class="alert alert-danger alert-dismissable">
+		  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		  <h3><i class="glyph fa fa-thumbs-o-down"></i> Account creation  failed</h3>
+		  <div>
+			  <%= params.reason %>
+		  </div>
+		</div>
+
 <% else %>
-    <h1>Create an account</h1>
+
 <% end %>
 
 
