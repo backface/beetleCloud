@@ -1,0 +1,38 @@
+<div class="row">
+	<div class="col-sm-2"></div>
+	<div class="col-sm-6 dlink">
+
+	<h1>Edit page: <%= slug %></h1>
+	
+	<form class="form-horizontal" method="POST" action="/page/save/<%= slug %>">
+		<textarea id="content" name="content">	
+			<%= content %>
+		</textarea>
+		
+		
+		<div class="form-group">
+		<div class="col-md-3">  
+		   <div class="btn-group">    
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Save</button>     
+		  </div> 
+		</div>
+		</div>
+
+	</form>
+	
+	
+	<script src="/static/lib/ckeditor/ckeditor.js"></script>
+	<script>
+		//CKEDITOR.disableAutoInline = true;
+		CKEDITOR.replace( 'content', {
+			width: '640px',
+			height:'400px'} );
+		
+
+	</script>
+
+		
+	<p>&nbsp;</p>
+			
+	</div>
+</div>

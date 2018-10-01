@@ -1,0 +1,33 @@
+
+<h1 style="text-align:center">Help scale Turtlestitch to a new level!!</h1>
+
+
+<div class="big-carousel">
+
+	<div class="slider top">
+		<div class="slide text-center">
+			<a href="/campaign"><img src="/static/img/cf_sack_rot.jpg" alt="" /></a>
+		</div>		
+	 </div> 
+</div>
+
+<div class="text-center" style="font-size:1.2em;line-height:1.5em">
+
+Improved plattform, learning materials & community resources<br />
+Improved production<br />
+<br />
+Exclusive coded designs for early backers!<br />
+<br />
+Subscribe to not miss campaign start!<br />
+<br />
+<form method="post" action="http://lists.turtlestitch.org/cgi-bin/mailman/subscribe/crowd">
+	<div class="navbar-form">
+		<div class="input-group">
+			<input type="email" class="form-control" placeholder="Your E-mail" name="email" value="" />
+		</div>
+		<div class="group-btn" style="padding-top:10px">
+			<button class="btn btn-danger" type="submit">Be Part of it!</button>     
+		</div>
+	</div>
+</form>
+</div>
