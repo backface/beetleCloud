@@ -535,6 +535,7 @@ app:match('save_project', '/api/projects/save', respond_to({
                 ispublic = self.params.ispublic,
                 contents = xmlString,
                 updated = db.format_date(),
+                created = db.format_date(),
                 notes = xml.find(xmlData, 'notes')[1] or '',
                 thumbnail = xml.find(xmlData, 'thumbnail')[1]
             })

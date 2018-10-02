@@ -1,6 +1,10 @@
 <div class="row">
-	<div class="col-sm-2">
-	
+	<div class="col-sm-2 ">
+		<% if visitor and visitor.isadmin then %>
+		<h3>
+			<a href="/page/edit/<%= slug %>"><i class="fa fa-pencil-square-o fa-2x"></i></a>
+		</h3>
+		<% end %>
 
 	</div>
 	<div class="col-sm-6 dlink">
@@ -10,12 +14,8 @@
 	<p>&nbsp;</p>
 			
 	</div>
-	<div class="col-sm-2">		
-		<% if visitor and visitor.isadmin then %>
-		<h3>
-			<a href="/page/edit/<%= slug %>"><i class="fa fa-pencil-square-o fa-2x"></i></a>
-		</h3>
-		<% end %>
+	<div class="col-sm-2 ">		
+
 
 
 	

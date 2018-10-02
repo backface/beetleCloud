@@ -39,8 +39,7 @@ app:get('/page/edit/:slug', function(self)
 	if self.visitor and self.visitor.isadmin then	
 		slug  = self.params.slug:gsub('%W','')
 		local f=io.open(path .. slug .. ".etlua")
-		if f~=nil 
-			then
+		if f~=nil then
 				self.content = f:read("*a")
 				f:close()
 			else self.content = ""
@@ -56,14 +55,21 @@ app:match('update_page', '/page/save/:slug', respond_to({
     OPTIONS = cors_options,
     POST = function (self)
 		self.visitor = Users:find(self.session.username)	
-		if self.visitor and self.visitor.isadmin then
-				
+		if self.visitor and self.visitor.isadmin then			
 			slug  = self.params.slug:gsub('%W','')		
-			local f=io.open(path .. slug .. ".etlua","w+")			
-			f:write(self.params.content)
-			f:close()
-
-			return { redirect_to = '/page/view/' .. slug }
+			
+			local f, err=io.open(path .. slug .. ".etlua",'w')
+			if f~=nil  then
+				f:write(self.params.content)
+				f:close()
+				f=io.open(path .. slug .. ".etlua",'r')
+				local output = f:read('*all')
+				f:close()
+				 
+				return { redirect_to = '/page/view/' .. slug }
+			else 
+				return { redirect_to = err }
+			end
 		else
 			return { render = 'noaccess' }
 		end
