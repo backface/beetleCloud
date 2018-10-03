@@ -18,9 +18,12 @@
 	<meta property="og:image:width" content="1099" />
 	<meta property="og:image:height" content="328" />
 
-	<meta name="twitter:card" content="summary"/>
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:site" content="@turtlestitch">
 	<meta name="twitter:title" content="<%= page_title or "" %><% if (page_title) then %> / <% end %>TurtleStitch - Coded Embroidery" />
 	<meta name="twitter:description" content="<%= project ~= nil and project.notes or "Turtlestitch is based on a browser-based educational programming language (Snap!) to generate patterns for embroidery machines." %>"/>
 	<meta name="twitter:domain" content="turtlestitch.org"/>
+	<meta name="twitter:image" content="<% if project ~= nil then %><%= build_url("/api/users/" .. util.escape(project.username) .. "/projects/" .. util.escape(project.projectname) .. "/thumblink") %><% else %> <%= build_url("/static/img/slide1.png") %><% end %>"/>
+
 
 	<link rel="canonical" href="<%= build_url(ngx.var.request_uri) %>"/>

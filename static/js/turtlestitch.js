@@ -16,10 +16,4 @@ $(document).ready(function(){
 		$(".icon-run").css("transform","rotate(" + Math.random() * 360 + "deg)");
 		window.setTimeout( rot_icon, 3000 + Math.random() * 10000);
 	}
-	
-	$("#close").click ( function(event) {
-		$(".kickstarter").hide();
-		event.preventDefaults();
-	});
-	
 });

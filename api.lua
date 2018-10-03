@@ -529,6 +529,16 @@ app:match('save_project', '/api/projects/save', respond_to({
 
         else
 
+			if (xml.find(xmlData, 'origCreator')) then 
+				origcreator = xml.find(xmlData, 'origCreator')[1] or self.params.username
+			end
+			if (xml.find(xmlData, 'origName')) then 
+				origname = xml.find(xmlData, 'origName')[1] or ''
+			end
+			if (xml.find(xmlData, 'remixHistory')) then 
+				remixhistory = xml.find(xmlData, 'remixHistory')[1] or ''
+			end
+
             project = Projects:create({
                 projectname = self.params.projectname,
                 username = self.params.username,
@@ -536,6 +546,9 @@ app:match('save_project', '/api/projects/save', respond_to({
                 contents = xmlString,
                 updated = db.format_date(),
                 created = db.format_date(),
+                origcreator = origcreator,
+                origname = origname,
+                remixhistory = remixhistory,
                 notes = xml.find(xmlData, 'notes')[1] or '',
                 thumbnail = xml.find(xmlData, 'thumbnail')[1]
             })

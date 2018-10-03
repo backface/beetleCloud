@@ -75,9 +75,9 @@ CREATE TABLE projects (
     views integer,
     imageisfeatured boolean,
 	admin_tags text,
-	origCreator text,
-	origName text,
-	remixHistory text
+	origcreator text,
+	origname text,
+	remixhistory text
 );
 
 CREATE SEQUENCE projects_id_seq

@@ -9,15 +9,12 @@
 	</div>
 	<div class="col-sm-6 dlink">
 	
-	<% render(view) %>
+	<%- (view) %>
 	
 	<p>&nbsp;</p>
 			
 	</div>
 	<div class="col-sm-2 ">		
 
-
-
-	
 	</div>
 </div>

@@ -20,18 +20,26 @@ local path = "pages/"
 --    return { render = 'stories' }
 --end)
 
-app:get('/page/view/:slug', function(self)
+app:get('pageview', '/page/:slug', function(self)
     self.visitor = Users:find(self.session.username)
 	slug  = self.params.slug:gsub('%W','')
 	local f=io.open(path .. slug .. ".etlua")
-	if f~=nil then io.close(f) 
+	if f~=nil then 
+		self.content = f:read("*a")
+		f:close() 
 		self.page_title = slug
-		self.view = path .. slug
+		self.view = self.content
 		return { render = "pageview" } 
 	else 
 		return { render = 'notfound' }
 	end
 end)
+
+app:get('/page/view/:slug', function(self)
+	slug  = self.params.slug:gsub('%W','')
+    return { redirect_to = '/page/' .. slug }
+end)
+
 
 
 app:get('/page/edit/:slug', function(self)
@@ -66,7 +74,7 @@ app:match('update_page', '/page/save/:slug', respond_to({
 				local output = f:read('*all')
 				f:close()
 				 
-				return { redirect_to = '/page/view/' .. slug }
+				return { redirect_to = '/page/' .. slug }
 			else 
 				return { redirect_to = err }
 			end

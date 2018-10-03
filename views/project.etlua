@@ -70,7 +70,7 @@
 				</button>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="sharebutton">
 					<li role="presentation">
-					  <a role="menuitem" tabindex="-1" target="_blank" href="https://twitter.com/home?status=<%= util.escape(project.projectname .. " on TurtleStitch: ") .. build_url(ngx.var.request_uri) %>">
+					  <a role="menuitem" tabindex="-1" target="_blank" href="https://twitter.com/home?status=<%= util.escape(project.projectname .. " on TurtleStitch: ") .. util.escape(build_url(ngx.var.request_uri)) %>">
 						<i class="fa fa-twitter fa-fw"></i>
 						Share on Twitter
 					  </a>
@@ -89,10 +89,17 @@
 				</ul>
 			</div>
 
+			<a class="betalink" href="/beta#cloud:Username=<%= util.escape(project.username) %>&ProjectName=<%= util.escape(project.projectname) %>">
+				Open in evelvoin Wheezy Needle (Alpha/Beta Testing!)
+			</a>
+			
 			<% if visitor and visitor.isadmin then %>
-
-			<a class="betalink" href="/beta#cloud:Username=<%= util.escape(project.username) %>&ProjectName=<%= util.escape(project.projectname) %>">Open in Wheezy Needle (Alpha/Beta Testing!)</a>
-
+				<br /><br />
+				<div class="betalink">
+				Orig Name: <%= project.origname %> /
+				Orig Creator: <%= project.origcreator %> /
+				Remix history: <%= project.remixhistory %>
+				</div>
 			<% end %>
 
             <hr />
