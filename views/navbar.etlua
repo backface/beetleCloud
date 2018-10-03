@@ -15,11 +15,11 @@
 	</div>
 	<div id="navbar" class="navbar-collapse collapse">
 	  <ul class="nav navbar-nav">
-		<li><a href="/about">About</a></li>
+		<li><a href="/page/about">About</a></li>
 		<!--<li><a href="/projects/g/newest">Projects</a></li>-->
 		<li><a href="/categories">Categories</a></li>
-		<li><a href="/faq">FAQ</a></li>
-		<!--<li><a href="/contact">Contact</a></li>-->
+		<li><a href="/page/faq">FAQ</a></li>
+		<!--<li><a href="/page/contact">Contact</a></li>-->
 		<li><a href="http://www.stitchcode.com/category/turtlestitch/" target="_blank">Blog</a></li>
 
 		<% render("views/search") %>
