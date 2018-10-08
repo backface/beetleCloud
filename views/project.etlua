@@ -120,7 +120,7 @@
 							<% for k,v in pairs(project.likers) do %>
 								<a href="/users/<%= v.liker %>">
 								 <img width='24' height='24' class="gravatar img-circle" alt=""
-									src="http://www.gravatar.com/avatar/<%= v.gravatar %>?s=24&d=http%3A%2F%2Fwww.turtlestitch.org%2Fstatic%2Fimg%2Fturtle.png" />
+									src="https://www.gravatar.com/avatar/<%= v.gravatar %>?s=24&d=https%3A%2F%2Fwww.turtlestitch.org%2Fstatic%2Fimg%2Fturtle.png" />
 								<%= v.liker %>
 								</a>
 							<% end %>

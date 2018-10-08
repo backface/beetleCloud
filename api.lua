@@ -108,9 +108,9 @@ app:get('/api/users/:username/gravatar', function (self)
             layout = false,
             status = 200,
             readyState = 4,
-            "http://www.gravatar.com/avatar/"
+            "https://www.gravatar.com/avatar/"
                 .. md5.sumhexa(user.email)
-                .. "?s=64&d=http%3A%2F%2Fbeta.turtlestitch.org%2Fstatic%2Fimg%2Fturtle.png"
+                .. "?s=64&d=https%3A%2F%2Fwww.turtlestitch.org%2Fstatic%2Fimg%2Fturtle.png"
         }
     else
         return err.nonexistentUser
