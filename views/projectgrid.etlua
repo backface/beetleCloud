@@ -21,7 +21,7 @@
 
     <div class="arrow" align="center">
 		<div class="spacer">&nbsp;</div>
-        <a id="loadmore" class="btn btn-primary center" onclick="if (projects.length == 16) { offset = offset + 16; getMore(); }">
+        <a id="loadmore" class="btn btn-primary center" onclick="if (projects.length == 18) { offset = offset + 18; getMore(); }">
 			<i class="fa fa-arrow-circle-down"></i> Load more...</a>
     </div>
 
@@ -44,7 +44,7 @@
                 }
             };
             // The second part of the query needs to be enclosed between double commas, as SQL strings are enclosed by single ones
-            ajax.open('GET', '/api/projects/<%= collection %>/16/' + offset + "<%= '/' .. (username or '') %>?list=<%= list or '' %>&notes=<%= notes or '' %>&tag=<%= tag or '' %>", true);
+            ajax.open('GET', '/api/projects/<%= collection %>/18/' + offset + "<%= '/' .. (username or '') %>?list=<%= list or '' %>&notes=<%= notes or '' %>&tag=<%= tag or '' %>", true);
             ajax.send();
         };
 
