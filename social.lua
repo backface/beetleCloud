@@ -21,6 +21,10 @@ local Projects = Model:extend('projects', {
     primary_key = { 'username', 'projectname' }
 })
 
+local Projects_by_orig = Model:extend('projects', {
+    primary_key = { 'origcreator', 'origname' }
+})
+
 local Likes = Model:extend('likes', {
     primary_key = { 'id' }
 })
@@ -135,7 +139,19 @@ app:get('/users/:username/projects/:projectname', function(self)
         self.project:update({
             views = (self.project.views or 0) + 1
         })
+        
+        if (self.project.origname and self.project.origcreator) then 
+			self.project.origProject = Projects:find(
+				self.project.origcreator,
+				self.project.origname)
+		end
 
+		self.project.remixes = db.select(
+			'* from projects where origname =  ? and origcreator = ? ',
+			self.project.projectname,
+			self.project.username)
+	
+        
 		self.page_title =  self.params.projectname
 		
 		

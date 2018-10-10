@@ -57,7 +57,7 @@
                             property = 'notes'
                     })
                   else %>
-                      <%= project.notes ~= '' and project.notes or 'This project has no notes.' %>
+                      <%= project.notes ~= '' and project.notes or '' %>
                       
                 <% end %>
             </div>
@@ -186,10 +186,50 @@
 
 
 		<div class="spacer">&nbsp;</div>
+		
+
+		<% if (project.origProject )then %>
+		
+		<div class="remixedfrom">
+			<div class="row">
+				<h4><i class="fa fa-rotate-left" aria-hidden="true"></i>&nbsp;
+				Derived from:</h4>
+				<div class="col-sm-2 small-thumbnail ">
+					<a href="/users/<%= util.escape(project.origProject.username) %>/projects/<%= util.escape(project.origProject.projectname) %>"><img src="<%= project.origProject.thumbnail %>" alt="thumbnail" width="100" /></a>
+				</div>
+				<div class="col-sm-6">
+					<h5><%= project.origProject.projectname %> </h5>
+					<span class="author">by <a href="/users/<%= util.escape(project.origcreator) %>"><%- project.origcreator %></a></span>
+				</div>
+			</div>
+		</div>
+		
+		<% end %>
+
+		<% if (table.getn(project.remixes)) > 0 then %>
+		<div class="remixedfrom">
+			<div class="row">
+				<h4><i class="fa fa-repeat" aria-hidden="true"></i>&nbsp;
+				Remixed by (<%= table.getn(project.remixes) %>)</h4>
+				<% for i, p in pairs(project.remixes) do %>
+					<div class="row item">
+					<div class="col-sm-2 small-thumbnail ">
+						<a href="/users/<%= util.escape(p.username) %>/projects/<%= util.escape(p.projectname) %>"><img src="<%= p.thumbnail %>" alt="thumbnail" width="100" /></a>
+					</div>
+					<div class="col-sm-6">
+						<h5><%= p.projectname %> </h5>
+						<span class="author">by <a href="/users/<%= util.escape(p.username) %>"><%- p.username %></a></span>
+					</div>
+					</div>
+				<% end %>
+				
+			</div>
+		</div>
+		<% end %>
 
 
 		<div class="comments">
-			<h4><i class="fa fa-comments" aria-hidden="true"></i>
+			<h4><i class="fa fa-comments" aria-hidden="true"></i>&nbsp;
 			Comments (<%= table.getn(project.comments) %>)</h4>
 
 			<% if (session.username ~= "") then %>
@@ -210,7 +250,6 @@
 
 			<div id="comment-pool">
 			</div>
-
 		</div>
 	</div>
 </div>
