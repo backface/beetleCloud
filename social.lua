@@ -36,6 +36,23 @@ local Comments = Model:extend('comments', {
 
 -- Endpoints
 
+-- This module only takes care of the index page
+app:get('/1', function(self)
+    local query = {
+        newest = 'projectName, username, thumbnail from projects where isPublic = true order by id desc',
+        popular = 'count(*) as likecount, projects.projectName, projects.username, projects.thumbnail from projects, likes where projects.isPublic = true and projects.projectName = likes.projectName and projects.username = likes.projectowner group by projects.projectname, projects.username order by likecount desc',
+        featured  = 'projectName, username, thumbnail from projects where isPublic = true and admin_tags ilike \'%featured%\' order by id desc',
+        gettingstarted = 'projectName, username, thumbnail from projects where isPublic = true and admin_tags ilike \'%Getting Started%\' order by id desc'
+    }
+   
+	newest = db.select(query['newest'] .. ' limit ? offset ?', 15,0)  
+	popular = db.select(query['popular'] .. ' limit ? offset ?', 15,0)
+	featured = db.select(query['featured'] .. ' limit ? offset ?', 15,0)
+	gettingstarted = db.select(query['gettingstarted'] .. ' limit ? offset ?', 15,0)
+	
+    return { render = 'index2' }
+end)
+
 app:get('/signup', function(self)
     self.fail = self.params.fail
     self.reason = self.params.reason

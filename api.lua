@@ -703,7 +703,9 @@ app:match('alternate_image', '/api/users/:username/projects/:projectname/altimag
                 return err.auth
             end
 
-            project:update({ imageisfeatured = self.params.featureImage == 'true' })
+            project:update({ imageisfeatured = self.params.featureimage == 'true' })
+            
+            return "asdfads"
         else
             -- we are just asking for the alternate image for this project
             return altImageFor(project)

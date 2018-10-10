@@ -74,8 +74,11 @@ function setAlternateImageSrc () {
         if (ajax.readyState == 4 && ajax.status == 200) {
             document.getElementsByClassName('alternate')[0].src = ajax.responseText;
             if (ajax.responseText=="/static/img/no-image.png") {
-				$('.alternate').addClass('hidden');
-				$('.buttons').addClass('hidden');
+				//$('.alternate').addClass('hidden');
+				//$('.buttons').addClass('hidden');
+			} else {
+				$('.alternate').removeClass('hidden');
+				$('.buttons').removeClass('hidden');
 			}
         }
     };

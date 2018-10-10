@@ -11,9 +11,11 @@
             //carouselDiv_<%= id %>.classList.add('fade');
             ajax_<%= id %>.onreadystatechange = function () {
                 if (ajax_<%= id %>.readyState == 4 && ajax_<%= id %>.status == 200) {
-                    projects_<%= id %> =JSON.parse(ajax_<%= id %>.responseText);
-                    update<%= id %>();
-                    //carouselDiv_<%= id %>.classList.remove('hidden');
+					if(JSON.parse(ajax_<%= id %>.responseText).length) {
+						projects_<%= id %> =JSON.parse(ajax_<%= id %>.responseText);
+						update<%= id %>();
+						//carouselDiv_<%= id %>.classList.remove('hidden');
+					}
                 }
             };
             // The second part of the query needs to be enclosed between double commas, as SQL strings are enclosed by single ones
@@ -76,7 +78,7 @@
     <div class="projects slider projects_<%= id %>" id="projects_<%= id %>">
         <% for i = 1, 10, 1 do %>
         <div class="project empty" id="project-<%= i - 1 %>-<%= id %>">
-            <a><img class="thumbnail" src="/static/img/no-thumb.png" data-lazy="/static/img/no-thumb.png" alt="" /></a>
+            <a><img class="thumbnail" src="/static/img/no-thumb.png" alt="" /></a>
             <a class="name ellipsis"></a>
             <span class="author">by <a href=""></a></span>
         </div>
@@ -86,6 +88,7 @@
 
 
     <script>
+		//$(".projects_<%= id %>").hide();
 		$(document).ready(function(){
 
             prev_<%= id %> = function() {
@@ -102,8 +105,13 @@
                 }
             }
 
-			$('.projects_<%= id %>').slick({
-                lazyLoad: 'ondemand',
+			$('.projects_<%= id %>')
+			.on('init', function(slick) {
+				$(".projects_<%= id %>").removeClass('hidden');
+				
+				})
+			.slick({
+                lazyLoad: "progressive",
 				dots: false,
 				infinite: true,
 				speed: 300,

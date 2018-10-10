@@ -15,7 +15,7 @@
 
 				<div class="big-thumbnail <%= project.imageisfeatured and '' or 'featured' %>">
 					<img src="<%= project.thumbnail %>" class="fluid pull-right" alt="thumbnail"/>
-					<div class="buttons text-center">
+					<div class="buttons hidden text-center">
 					<% if (project.username == session.username) then %>
 							<a class="btn" role="button" onclick="featureImage(false)">Feature me</a>
 					<% end %>
@@ -23,9 +23,9 @@
 				</div>
 
 				<div class="big-thumbnail <%= project.imageisfeatured and 'featured' or '' %>">
-					<img class="alternate fluid" src="/static/img/no-thumb.png" alt="feature image" />
+					<img class="alternate fluid hidden" src="/static/img/no-thumb.png" alt="feature image" />
 					<% if (project.username == session.username) then %>
-						<div class="buttons text-center alt">
+						<div class="buttons hidden text-center alt">
 							<a class="btn" role="button" onclick="featureImage(true)">Feature me</a><br />
 						</div>
 						<div class="fileinput">
