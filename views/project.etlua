@@ -17,7 +17,7 @@
 					<img src="<%= project.thumbnail %>" class="fluid pull-right" alt="thumbnail"/>
 					<div class="buttons hidden text-center">
 					<% if (project.username == session.username) then %>
-							<a class="btn" role="button" onclick="featureImage(false)">Feature me</a>
+							<a class="btn btn-warning" role="button" onclick="featureImage(false)">Feature me</a>
 					<% end %>
 					</div>
 				</div>
@@ -26,7 +26,7 @@
 					<img class="alternate fluid hidden" src="/static/img/no-thumb.png" alt="feature image" />
 					<% if (project.username == session.username) then %>
 						<div class="buttons hidden text-center alt">
-							<a class="btn" role="button" onclick="featureImage(true)">Feature me</a><br />
+							<a class="btn btn-warning" role="button" onclick="featureImage(true)">Feature me</a><br />
 						</div>
 						<div class="fileinput">
 							<form class="fileinput">
@@ -47,18 +47,15 @@
 		<div class="col-md-8">
             <span class="author">by <a href="/users/<%= util.escape(project.username) %>"><%- project.username %></a></span>
 
-
             <div class="notes">
-                <% if (project.username == session.username) then
-                    render("views/inplace", {
+                <% if (project.username == session.username) then  %>
+                 <%   render("views/inplace", {
                             content = project.notes,
                             id = project.projectname:gsub('%W','') .. '_notes',
                             path = 'users/' .. session.username .. '/projects/' .. project.projectname,
-                            property = 'notes'
-                    })
-                  else %>
-                      <%= project.notes ~= '' and project.notes or '' %>
-                      
+                            property = 'notes' })  %>
+                 <% else %>
+                       <div class="content"><%= project.notes ~= '' and project.notes or '' %> </div>
                 <% end %>
             </div>
 
@@ -96,8 +93,6 @@
 			<% if visitor and visitor.isadmin then %>
 				<br /><br />
 				<div class="betalink">
-				Orig Name: <%= project.origname %> /
-				Orig Creator: <%= project.origcreator %> /
 				Remix history: <%= project.remixhistory %>
 				</div>
 			<% end %>
@@ -235,16 +230,15 @@
 			<% if (session.username ~= "") then %>
 
 			<textarea
-			    class="in-place"
 			    id="new_comment"
-			    contenteditable="true"
-			    onblur=""
 				placeholder="Leave a comment"
-			    onfocus="document.getElementById('new_comment').classList.remove('flash');"
 			    ></textarea>
 
 			<a class="btn btn-primary" onClick="post_comment('<%= project.projectname %>','<%= session.username %>','<%= project.username %>')">Post</a>
 			<a class="btn btn-grey" onClick="reset_comment()">Cancel</a>
+
+				<div class="sending hidden"><i class="fa fa-spinner fa-pulse" aria-hidden="true"></i> sending comment ... </div>
+				<div class="senderror hidden"><i class="fa fa-warning" aria-hidden="true"></i> error sending commen, please try again ..</div>
 
 			<% end %>
 

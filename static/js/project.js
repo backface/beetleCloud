@@ -143,7 +143,7 @@ setAlternateImageSrc();
 sortThumbnails();
 
 document.getElementsByClassName('notes')[0].innerHTML = (buildHyperlinks(document.getElementsByClassName('notes')[0].innerHTML));
-document.getElementsByClassName('notes')[0].innerHTML = (nl2br(document.getElementsByClassName('notes')[0].innerHTML));
+$(".notes .content").html(nl2br($(".notes .content").html()));
 
 
 
@@ -204,7 +204,7 @@ function addComment(comment, prepend) {
         '</ div><div class="clear"></div></div>';
 
 
-   div.classList.add('flash');
+   //div.classList.add('flash');
 }
 
 function updateComments () {
@@ -223,7 +223,13 @@ function post_comment (projectname, author, username) {
         if (ajax_save_comment.readyState == 4 && ajax_save_comment.status == 200) {
             document.getElementById('new_comment').value = "";
             comments = JSON.parse(ajax_save_comment.responseText);
+            if (comments.error) {
+				$('.comments .sending').addClass('hidden');
+				$('.comments .senderror').html("error: " + comments.error);
+				$('.comments .senderror').removeClass('hidden');
+			}
             getComment(comments.comment.id);
+            $('.comments .sending').addClass('hidden');
         }
     };
     ajax_save_comment.open('POST', '/api/comments/new', true);
@@ -237,6 +243,8 @@ function post_comment (projectname, author, username) {
         "&contents=" +
         encodeURIComponent(document.getElementById('new_comment').value)
         );
+   $('.comments .senderror').addClass('hidden');
+   $('.comments .sending').removeClass('hidden');
 }
 
 function delete_comment (id) {

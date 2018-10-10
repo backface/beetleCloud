@@ -95,13 +95,16 @@
                 if (offset_<%= id %> > 0) {
                     offset_<%= id %> = offset_<%= id %> - 5;
                     get<%= id %>();
-                }
+                } 
             }
 
             next_<%= id %> = function() {
                 if (projects_<%= id %>.length == 5) {
                      offset_<%= id %> = offset_<%= id %> + 5;
                      get<%= id %>();
+                } else { 
+					offset_<%= id %> = 0;
+                    get<%= id %>();
                 }
             }
 
