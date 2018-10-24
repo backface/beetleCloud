@@ -13,7 +13,7 @@
 <% end %>
 
 
-<form class="form-horizontal" method="GET" action="/api/users/login">
+<form class="form-horizontal" method="POST" action="/api/users/login">
   <div class="form-group">
 	<div class="col-md-3">
 	  <div class="input-group">

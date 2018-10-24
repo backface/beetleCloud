@@ -252,8 +252,8 @@ end)
 
 app:match('login', '/api/users/login', respond_to({
     OPTIONS = cors_options,
-    GET = function (self)
-        local user = Users:find(self.params.username)
+    POST = function (self)
+        local user = Users:find(self.params.username)        
         local comesFromWebClient = ngx.var.http_referer:match('/run') == nil
 
 		-- login via email - needs cleanup of user table, too many duplicate emails

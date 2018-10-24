@@ -93,7 +93,8 @@
 			<% if visitor and visitor.isadmin then %>
 				<br /><br />
 				<div class="betalink">
-				Remix history: <%= project.remixhistory %>
+				 Derived from <%= project.origcreator %>,  <%= project.origname %><br /> 
+				 Remix history: <%= project.remixhistory %>
 				</div>
 			<% end %>
 
@@ -181,7 +182,7 @@
 
 
 		<div class="spacer">&nbsp;</div>
-		
+			
 
 		<% if (project.origProject )then %>
 		
@@ -201,27 +202,31 @@
 		
 		<% end %>
 
+
+		<% if (project.remixes )then %>
 		<% if (table.getn(project.remixes)) > 0 then %>
 		<div class="remixedfrom">
 			<div class="row">
 				<h4><i class="fa fa-repeat" aria-hidden="true"></i>&nbsp;
-				Remixed by (<%= table.getn(project.remixes) %>)</h4>
+				Remixed by (<%= project.remixCount %>)</h4>
 				<% for i, p in pairs(project.remixes) do %>
-					<div class="row item">
-					<div class="col-sm-2 small-thumbnail ">
-						<a href="/users/<%= util.escape(p.username) %>/projects/<%= util.escape(p.projectname) %>"><img src="<%= p.thumbnail %>" alt="thumbnail" width="100" /></a>
-					</div>
-					<div class="col-sm-6">
-						<h5><%= p.projectname %> </h5>
-						<span class="author">by <a href="/users/<%= util.escape(p.username) %>"><%- p.username %></a></span>
-					</div>
-					</div>
+					<% if (p.username ~= project.username or p.projectname ~= project.projectname) then %>					
+						<div class="row item">
+						<div class="col-sm-2 small-thumbnail ">
+							<a href="/users/<%= util.escape(p.username) %>/projects/<%= util.escape(p.projectname) %>"><img src="<%= p.thumbnail %>" alt="thumbnail" width="100" /></a>
+						</div>
+						<div class="col-sm-6">
+							<h5><%= p.projectname %> </h5>
+							<span class="author">by <a href="/users/<%= util.escape(p.username) %>"><%- p.username %></a></span>
+						</div>
+						</div>
+					<% end %>
 				<% end %>
 				
 			</div>
 		</div>
 		<% end %>
-
+		<% end %>
 
 		<div class="comments">
 			<h4><i class="fa fa-comments" aria-hidden="true"></i>&nbsp;

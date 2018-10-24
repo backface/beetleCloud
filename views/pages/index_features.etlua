@@ -1,33 +1,41 @@
-
-
-
-
-
 <div class="big-carousel">
 
 	<div class="slider top">
-	
+
+
 		<div class="slide text-center">
-			<img class="first-slide" data-lazy="/static/img/slide1.png" alt="code! .. draw! .. stitch!" />
+			<img class="first-slide" src="/static/img/slide1.png" alt="" />
+		</div>
+			
+		<div class="slider top">
+			<div class="slide text-center">
+				<a href="https://makezine.com/2018/07/17/turtle-stitch-goes-code-embroidery/">
+					<img  data-lazy="/static/img/make_slide.jpg" alt="" />
+				</a>	
+			</div>		
+		</div>		
+
+		<div class="slide text-center">
+			<a href="/users/mash/projects/dragon curve"><img data-lazy="/static/img/slide2.jpg" alt=""></a>
+		</div>
+
+		<div class="slide text-center">
+			<a href="http://www.turtlestitch.org/static/download/TurtleStitch-Cards-Beginners.pdf" title="TurtleStitch Cards for Beginners">
+				<img class="first-slide" data-lazy="/static/img/cards.jpg" alt="" />
+			</a>
+		</div>
+				
+		<div class="slide text-center">
+			<a href="/users/chmod/projects/AshaInfinityMandale_modification2">
+				<img data-lazy="/static/img/slide3.jpg" alt="" /></a>
 		</div>
 		
 		<div class="slide text-center">
 			<a href="http://www.turtlestitch.org/static/download/TurtleStitch-Cards-Beginners.pdf" title="TurtleStitch Cards for Beginners">
-				<img class="first-slide" src="/static/img/cards.jpg" alt="TurtleStitch Cards for Beginners" />
-			</a>
-		</div>
-
-		<div class="slide text-center">
-			<a href="/users/mash/projects/dragon curve"><img data-lazy="/static/img/slide2.jpg" alt="Dragon Curve"></a>
-		</div>
-		<div class="slide text-center">
-			<a href="/users/chmod/projects/AshaInfinityMandale_modification2"><img data-lazy="/static/img/slide3.jpg" alt="ashaMANDALAinfinity" /></a>
-		</div>
-		<div class="slide text-center">
-			<a href="http://www.turtlestitch.org/static/download/TurtleStitch-Cards-Beginners.pdf" title="TurtleStitch Cards for Beginners">
-				<img class="first-slide" data-lazy="/static/img/cards2.jpg" alt="TurtleStitch Cards for Beginners" />
+				<img class="first-slide" data-lazy="/static/img/cards2.jpg" alt="" />
 			</a>
 		</div>		
+		
 		<div class="slide text-center">
 			<a href="/users/chmod/projects/random stitch length"><img data-lazy="/static/img/slide4.jpg" alt="" /></a>
 		</div>

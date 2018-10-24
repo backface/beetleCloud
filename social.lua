@@ -11,6 +11,8 @@ local respond_to = require('lapis.application').respond_to
 local unistd = require "posix.unistd"
 local config = require "lapis.config".get()
 
+require 'backend_utils'
+
 -- Database abstractions
 
 local Users = Model:extend('users', {
@@ -157,18 +159,40 @@ app:get('/users/:username/projects/:projectname', function(self)
             views = (self.project.views or 0) + 1
         })
         
-        if (self.project.origname and self.project.origcreator) then 
+        -- if (self.project.remixhistory) then
+		--	history = explode(";",self.project.remixhistory)		
+		--	if (history) then
+		--		orig = explode(":",history[1])
+		--		origname = orig[2]
+		--		origcreator = orig[1]
+		--	end
+		-- end
+        
+        if ( self.project.origname and 
+			 self.project.origcreator and 
+			 self.project.origcreator ~= "anonymous" and
+			(self.project.origname ~= self.project.projectname or self.project.origcreator ~= self.project.username)
+			
+        ) then
 			self.project.origProject = Projects:find(
 				self.project.origcreator,
 				self.project.origname)
 		end
 
 		self.project.remixes = db.select(
-			'* from projects where origname =  ? and origcreator = ? ',
+			'* from projects where origname =  ? and origcreator = ? and (projectname != ? or username != ?) limit 10',
+			self.project.projectname,
+			self.project.username,
+			self.project.projectname,
+			self.project.username
+			)
+		self.project.remixCount =
+            Projects:count('origname =  ? and origcreator = ? and (projectname != ? or username != ?)',
+			self.project.projectname,
+			self.project.username,
 			self.project.projectname,
 			self.project.username)
-	
-        
+
 		self.page_title =  self.params.projectname
 		
 		

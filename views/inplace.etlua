@@ -14,13 +14,13 @@
     };
 
 </script>
-<div class="content inplace"
+<div class="content inplace" style="min-height:50px"
     id="<%= id %>"
     contenteditable="true"
     onblur=""
     onfocus="document.getElementById('<%= id %>').classList.remove('flash');"
     onkeypress=""><%= content %></div>
-<div class="sending hidden"><i class="fa fa-spinner fa-pulse" aria-hidden="true"></i>updating notes.. </div>
-<div class="senderror hidden"><i class="fa fa-warning" aria-hidden="true"></i> error sending note, please try again ..</div>
+<div class="sending hidden"><i class="fa fa-spinner fa-pulse" aria-hidden="true"></i>updating.. </div>
+<div class="senderror hidden"><i class="fa fa-warning" aria-hidden="true"></i> error sending text, please try again ..</div>
 
-<div><button class="btn btn-warning updatebutton" onclick="update_<%= id %>()">Update Notes</button></div>
+<div><button class="btn btn-warning updatebutton" onclick="update_<%= id %>()">Update</button></div>
