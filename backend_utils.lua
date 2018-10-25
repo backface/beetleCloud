@@ -184,3 +184,90 @@ function explode(d,p)
    end
    return t
 end
+
+-- explode(seperator, string)
+function explode_and_trim(d,p)
+   local t, ll
+   t={}
+   ll=0
+   if(#p == 1) then
+      return {p}
+   end
+   while true do
+      l = string.find(p, d, ll, true) -- find the next d in the string
+      if l ~= nil then -- if "not not" found then..
+		 s = string.sub(p,ll,l-1)
+		 s = s:gsub("^%s+", ""):gsub("%s+$", "")
+         table.insert(t, s) -- Save it in our array.
+         ll = l + 1 -- save just after where we found it for searching next time.
+      else
+		 s = string.sub(p,ll)
+		 s = s:gsub("^%s+", ""):gsub("%s+$", "")      
+         table.insert(t, s) -- Save what's left in our array.
+         break -- Break at end, as it should be, according to the lua manual.
+      end
+   end
+   return t
+end
+
+
+-- explode(seperator, string)
+function trim_tag_str(d,p)
+   local ll
+   local d = ','
+   local o = ''
+   t={}
+   ll=0
+   if(#p == 1) then
+      return {p}
+   end
+   while true do
+      l = string.find(p, d, ll, true) -- find the next d in the string
+      if l ~= nil then -- if "not not" found then..
+		 s = string.sub(p,ll,l-1)
+		 s = s:gsub("^%s+", ""):gsub("%s+$", "")
+         ll = l + 1 -- save just after where we found it for searching next time.
+         o = o .. s .. d
+      else
+		 s = string.sub(p,ll)
+		 s = s:gsub("^%s+", ""):gsub("%s+$", "")      
+         o = o .. s .. d
+         break -- Break at end, as it should be, according to the lua manual.
+      end
+   end
+   return o
+end
+
+
+function remove_dups(a)
+	local hash = {}
+	local res = {}
+
+	for _,v in ipairs(a) do
+	   if (not hash[v]) then
+		   res[#res+1] = v 
+		   hash[v] = true
+	   end
+	end
+	return res
+end
+
+function filter_tags(s)
+	s = s:gsub('[%/\\.;]', ",")
+	s = s:gsub('[%%<>"\'\\()]', "")
+	local tags = explode_and_trim(',', s or '')
+	local tag_str = ''
+	if tags then
+		tags = remove_dups(tags)
+		for i, p in pairs(tags) do 
+			if p ~= '' then
+				tag_str = tag_str .. p
+				if i < table.getn(tags) then
+					tag_str = tag_str .. ","
+				end
+			end
+		end
+	end
+	return tag_str
+end
+				

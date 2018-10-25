@@ -8,10 +8,11 @@
                     favorite = (username ~= 'Examples') and ('Projects liked by ' .. username) or ('Beetle Blocks team favorites'),
                     shared = 'Projects shared by ' .. username,
                     notes = notes,
-                    tag = tag
+                    category = category,
+                    tag = tag,
                 }
             %>
-            <%= titleDict[collection] %>
+            <%= titleDict[collection] or '' %>
         </h1>
     </div>
 
@@ -21,7 +22,7 @@
 
     <div class="arrow" align="center">
 		<div class="spacer">&nbsp;</div>
-        <a id="loadmore" class="btn btn-primary center" onclick="if (projects.length == 18) { offset = offset + 18; getMore(); }">
+        <a id="loadmore" class="btn btn-primary center" onclick="if (projects.length == limit) { offset = offset + limit; getMore(); }">
 			<i class="fa fa-arrow-circle-down"></i> Load more...</a>
     </div>
 
@@ -31,6 +32,7 @@
     <script>
         var ajax = new XMLHttpRequest(),
             offset = 0,
+            limit = 18,
             gridDiv = document.getElementById('projects-grid'),
             loadingDiv = document.getElementById('loading'),
             projects;
@@ -44,13 +46,16 @@
                 }
             };
             // The second part of the query needs to be enclosed between double commas, as SQL strings are enclosed by single ones
-            ajax.open('GET', '/api/projects/<%= collection %>/18/' + offset + "<%= '/' .. (username or '') %>?list=<%= list or '' %>&notes=<%= notes or '' %>&tag=<%= tag or '' %>", true);
+            ajax.open('GET', '/api/projects/<%= collection %>/' + limit + '/' + offset + 
+				"<%= '/' .. (username or '') %>?list=<%= list or '' %>&notes=<%= notes or '' %>&tag=<%= tag or '' %>&category=<%= category or '' %>", 
+				true
+			);
             ajax.send();
         };
 
         function updateGrid () {
 
-            if (projects.length < 16 || !projects.length) {
+            if (projects.length < limit || !projects.length) {
                 document.getElementById('loadmore').remove();
             }
 

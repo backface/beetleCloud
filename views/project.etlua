@@ -93,7 +93,6 @@
 			<% if visitor and visitor.isadmin then %>
 				<br /><br />
 				<div class="betalink">
-				 Derived from <%= project.origcreator %>,  <%= project.origname %><br /> 
 				 Remix history: <%= project.remixhistory %>
 				</div>
 			<% end %>
@@ -134,9 +133,10 @@
             </div>
 
             <div class="spacer">&nbsp;</div>
-
-            <% if visitor and visitor.isadmin then %>
-                <div class="admin">
+            
+            
+            <% if (project.username == session.username) or (visitor and visitor.isadmin) then  %>		
+                 <div class="admin">
                     <span>
                         <a class="btn btn-danger" onclick="deleteProject()">Delete</a>
                     </span>
@@ -144,21 +144,33 @@
                     <span>
                         <a class="btn btn-danger" onclick="shareProject()"><%= project.ispublic and "Unshare" or "Share" %></a>
                     </span>
+				</div>      
+            <% end %>
+            
+                  
+            <% if visitor and (visitor.isadmin or visitor.ismoderator) then %>
+				<div class="admin">
 					<div class="meta">
 					<div style="width: 0; height: 0; overflow: hidden;"><input id="fake-input2" style="opacity:0; filter:alpha(opacity=0);"></input></div>
 						<script>
-						    var ajax_admin_tags = new XMLHttpRequest();
-						    function update_admin_tags () {
-						        ajax_admin_tags.onreadystatechange = function () {
-						            if (ajax_admin_tags.readyState == 4 && ajax_admin_tags.status == 200) {
-						                document.getElementById('admin_tags').classList.add('flash');
+						    var ajax_categories = new XMLHttpRequest();
+						    function update_categories () {
+						        ajax_categories.onreadystatechange = function () {
+						            if (ajax_categories.readyState == 4 && ajax_categories.status == 200) {
+						                document.getElementById('categories').classList.add('flash');
+						                $('.admin .sending').addClass('hidden');  
+										var n = JSON.parse(ajax_categories.response).text.split(',').map(x => '<a href="/projects/g/category/' + x + '">' + x + '</a>').join(" ");
+										document.getElementById('catlinks').innerHTML = n;      
+          
 						            }
 						        };
 								path = '/api/users/<%= project.username %>/projects/<%= project.projectname %>';
-						        ajax_admin_tags.open('POST', path+ '/update/admin_tags');
-						        ajax_admin_tags.send(document.getElementById('admin_tags').textContent);
+						        ajax_categories.open('POST', path+ '/update/categories');
+						        ajax_categories.send(document.getElementById('categories').textContent);
+								$('.admin .senderror').addClass('hidden');
+								$('.admin .sending').removeClass('hidden');
 						    };
-						    function checkKey_admin_tags (event, element) {
+						    function checkKey_categories (event, element) {
 						        var code = (event.keyCode ? event.keyCode : event.which);
 						        if (code == 13 && !event.shiftKey) {
 						            document.getElementById('fake-input2').focus();
@@ -166,19 +178,100 @@
 						    };
 						</script>
 						<br />
-						Tags (admin):
+						Categories (comma seperated list):
 						<pre
 						    class="in-place"
-						    id="admin_tags"
+						    id="categories"
 						    contenteditable="true"
-						    onblur="update_admin_tags()"
-						    onfocus="document.getElementById('admin_tags').classList.remove('flash');"
-						    onkeypress="checkKey_admin_tags(event, this)"><%= project.admin_tags or "" %></pre>
+						    placeholder="comma seperated list"
+						    onblur="update_categories()"
+						    onfocus="document.getElementById('categories').classList.remove('flash');"
+						    onkeypress="checkKey_categories(event, this)"><%= project.categories or "" %></pre>
 					</div>
+					<div class="sending hidden"><i class="fa fa-spinner fa-pulse" aria-hidden="true"></i> updating categories .. </div>
+					<div class="senderror hidden"><i class="fa fa-warning" aria-hidden="true"></i> error sending categories, please try again ..</div>
+					<div id="catlinks">
+						<%  if project.categories then %>	
+							<script>
+							var n = ("<%= project.categories %>").split(',').map(x => '<a href="/projects/g/category/' + x + '">' + x + '</a>').join(" ");
+							document.getElementById('catlinks').innerHTML = n;      
+							</script>
+						<% end %>	
+					</div>	
                 </div>
             <% end %>
             
- 
+
+            <div class="spacer">&nbsp;</div>
+			
+			<% if (project.username == session.username) or (visitor and visitor.isadmin) then  %>				
+			
+				<div class="tags">	
+				<h4>Tags</h4>
+				<div style="width: 0; height: 0; overflow: hidden;"><input id="fake-input2" style="opacity:0; filter:alpha(opacity=0);"></input></div>
+					<script>
+						var ajax_tags = new XMLHttpRequest();
+						function update_tags () {
+							ajax_tags.onreadystatechange = function () {
+								if (ajax_tags.readyState == 4 && ajax_tags.status == 200) {
+									document.getElementById('tags').classList.add('flash');
+									$('.tags .sending').addClass('hidden'); 
+									var n = JSON.parse(ajax_tags.response).text.split(',').map(x => '<a href="/projects/g/tag/' + x + '">' + x + '</a>').join(" ");
+									document.getElementById('taglinks').innerHTML = n;      
+								}
+							};
+							path = '/api/users/<%= project.username %>/projects/<%= project.projectname %>';
+							ajax_tags.open('POST', path+ '/update/tags');
+							ajax_tags.send(document.getElementById('tags').textContent);
+							$('.tags .senderror').addClass('hidden');
+							$('.tags .sending').removeClass('hidden');
+						};
+						function checkKey_tags (event, element) {
+							var code = (event.keyCode ? event.keyCode : event.which);
+							if (code == 13 && !event.shiftKey) {
+								document.getElementById('fake-input2').focus();
+							}
+						};
+					</script>
+					
+					<pre
+						class="in-place"
+						id="tags"
+						contenteditable="true"
+						style="margin-top:0px;"
+						onblur="update_tags()"
+						onfocus="document.getElementById('tags').classList.remove('flash');"
+						onkeypress="checkKey_tags(event, this)"><%= project.tags or "" %></pre>
+					<span class="light small">(comma seperated list!)</span>
+				
+					<div class="sending hidden"><i class="fa fa-spinner fa-pulse" aria-hidden="true"></i> updating tags .. </div>
+					<div class="senderror hidden"><i class="fa fa-warning" aria-hidden="true"></i> error sending tags, please try again ..</div>	
+					<br /><br />
+					<div id="taglinks">
+						<%  if project.tags then %>	
+							<script>
+							var n = ("<%= project.tags %>").split(',').map(x => '<a href="/projects/g/tag/' + x + '">' + x + '</a>').join(" ");
+							document.getElementById('taglinks').innerHTML = n;      
+							</script>
+						<% end %>	
+				</div>	
+				</div>
+			
+						
+			<% else  %>				
+
+				<%  if project.tags then %>	
+					<div class="tags">	
+					<h4>Tags</h4>		
+					 <div id="taglinks">
+						<script>
+						var n = ("<%= project.tags %>").split(',').map(x => '<a href="/projects/g/tag/' + x + '">' + x + '</a>').join(" ");
+						document.getElementById('taglinks').innerHTML = n;      
+						</script>
+					</div>				
+					</div>
+				<% end %>				
+			<% end %>
 
 
 		<div class="spacer">&nbsp;</div>
@@ -186,10 +279,9 @@
 
 		<% if (project.origProject )then %>
 		
-		<div class="remixedfrom">
+		<div id="derivedfrom" class="remixedfrom">
 			<div class="row">
-				<h4><i class="fa fa-rotate-left" aria-hidden="true"></i>&nbsp;
-				Derived from:</h4>
+				<h4><i class="fa fa-rotate-left" aria-hidden="true"></i>&nbsp; Derived from:</h4>
 				<div class="col-sm-2 small-thumbnail ">
 					<a href="/users/<%= util.escape(project.origProject.username) %>/projects/<%= util.escape(project.origProject.projectname) %>"><img src="<%= project.origProject.thumbnail %>" alt="thumbnail" width="100" /></a>
 				</div>
@@ -202,32 +294,100 @@
 		
 		<% end %>
 
-
-		<% if (project.remixes )then %>
-		<% if (table.getn(project.remixes)) > 0 then %>
-		<div class="remixedfrom">
-			<div class="row">
-				<h4><i class="fa fa-repeat" aria-hidden="true"></i>&nbsp;
-				Remixed by (<%= project.remixCount %>)</h4>
-				<% for i, p in pairs(project.remixes) do %>
-					<% if (p.username ~= project.username or p.projectname ~= project.projectname) then %>					
-						<div class="row item">
-						<div class="col-sm-2 small-thumbnail ">
-							<a href="/users/<%= util.escape(p.username) %>/projects/<%= util.escape(p.projectname) %>"><img src="<%= p.thumbnail %>" alt="thumbnail" width="100" /></a>
-						</div>
-						<div class="col-sm-6">
-							<h5><%= p.projectname %> </h5>
-							<span class="author">by <a href="/users/<%= util.escape(p.username) %>"><%- p.username %></a></span>
-						</div>
-						</div>
-					<% end %>
-				<% end %>
-				
+		<div id="remixedfrom" class="remixedfrom">
+			<h4><i class="fa fa-repeat" aria-hidden="true"></i>&nbsp; Remixed by (<%= project.remixCount %>)</h4>
+			<div id="remixes" >			
 			</div>
+			<div class="row item">
+				<div class="col-sm-1">
+				</div>
+				<div class="col-sm-4">
+					<div id="loadingremixes"><i class="fa-li fa fa-spinner fa-spin"></i></div>
+				</div>
+			</div>
+			<div class="row item">
+				<div class="col-sm-8" style="padding-left:20px">
+					<a id="loadmore" class="btn btn-primary" onclick="if (projects.length == limit) { offset = offset + limit; getMore(); }">
+						<i class="fa fa-arrow-circle-down"></i> Load more...</a>				
+				</div>
+			</div>			
 		</div>
-		<% end %>
-		<% end %>
 
+		
+			<script>
+					var ajax_remixes = new XMLHttpRequest(),
+						offset = 0,
+						limit = 5,
+						gridDiv = document.getElementById('remixes'),
+						loadingDiv = document.getElementById('loadingremixes'),
+						projects;
+
+					function updateGrid () {						
+						
+						
+						if (!projects.length && offset == 0) {
+							document.getElementById('remixedfrom').remove();
+						} else if (projects.length < limit || !projects.length) {
+							document.getElementById('loadmore').remove();
+						}
+
+						if (projects.length) {
+							projects.forEach(
+									function (project) {
+										
+										var imageLoader = new XMLHttpRequest(),
+											div = document.createElement('div'),
+											projectHref= '/users/' +
+												encodeURIComponent(project.username) + '/projects/' +
+												encodeURIComponent(project.projectname);
+
+										div.className = 'row item';
+										gridDiv.appendChild(div);
+										
+										div.innerHTML  = '<div class="col-sm-2 small-thumbnail "><a href="' + projectHref + '">' + 
+										'<img src="/static/img/no-thumb.png" alt="thumbnail" width="100" /></a>' +
+										'</div><div class="col-sm-6"><h5>' +  project.projectname + '</h5>' + 
+										'<span class="author">by <a href="/users/' + encodeURIComponent(project.username)  + '">' + 
+										project.username + '</a></span></div>'
+
+										imageLoader.div = div;
+										imageLoader.onreadystatechange = function () {
+											if (this.readyState == 4 && this.status == 200) {
+												this.div.children[0].children[0].children[0].src = this.responseText;
+											}
+										};
+
+										imageLoader.open('GET', '/api/users/' + encodeURIComponent(project.username) +
+													'/projects/' + encodeURIComponent(project.projectname) +
+													'/image', true);
+										imageLoader.send();
+									});
+						}
+
+						loadingDiv.style.display = 'none';
+					};
+
+
+					function getMore () {
+						
+						loadingDiv.style.display = 'block';
+						ajax_remixes.onreadystatechange = function () {
+							if (ajax_remixes.readyState == 4 && ajax_remixes.status == 200) {
+								projects =JSON.parse(ajax_remixes.responseText);								
+								updateGrid();
+							}
+						};
+						ajax_remixes.open('GET', '/api/projects/remixes/' + limit + '/' + offset + "<%= '/' .. (project.username or '')  .. '/' .. (project.projectname or '') %>", true);
+						ajax_remixes.send();
+					};
+
+					
+					getMore();
+					
+				</script>		
+				
+				
+    
 		<div class="comments">
 			<h4><i class="fa fa-comments" aria-hidden="true"></i>&nbsp;
 			Comments (<%= table.getn(project.comments) %>)</h4>
@@ -292,7 +452,6 @@
 				if (!result) return;
 				ajax.onreadystatechange = function () {
 					bootbox.alert('Project <%= project.ispublic and "unshared" or "shared" %>')
-					window.location.reload();
 				};
 				ajax.open('GET', '/api/users/<%= project.username %>/projects/<%= project.projectname %>/visibility/?ispublic=<%= not project.ispublic %>', true);
 				ajax.send();

@@ -43,8 +43,8 @@ app:get('/1', function(self)
     local query = {
         newest = 'projectName, username, thumbnail from projects where isPublic = true order by id desc',
         popular = 'count(*) as likecount, projects.projectName, projects.username, projects.thumbnail from projects, likes where projects.isPublic = true and projects.projectName = likes.projectName and projects.username = likes.projectowner group by projects.projectname, projects.username order by likecount desc',
-        featured  = 'projectName, username, thumbnail from projects where isPublic = true and admin_tags ilike \'%featured%\' order by id desc',
-        gettingstarted = 'projectName, username, thumbnail from projects where isPublic = true and admin_tags ilike \'%Getting Started%\' order by id desc'
+        featured  = 'projectName, username, thumbnail from projects where isPublic = true and categories ilike \'%featured%\' order by id desc',
+        gettingstarted = 'projectName, username, thumbnail from projects where isPublic = true and categories ilike \'%Getting Started%\' order by id desc'
     }
    
 	newest = db.select(query['newest'] .. ' limit ? offset ?', 15,0)  
@@ -127,6 +127,14 @@ app:get('/projects/g/tag/:tag', function(self)
     return { render = 'projectgrid' }
 end)
 
+app:get('/projects/g/category/:category', function(self)
+	self.collection = "category"
+    self.category = self.params.category
+    self.username = ''
+    self.page_title =  self.params.category
+    return { render = 'projectgrid' }
+end)
+
 app:get('/users/:username/projects/:projectname', function(self)
     self.visitor = Users:find(self.session.username)
     self.project = Projects:find(self.params.username, self.params.projectname)
@@ -167,6 +175,13 @@ app:get('/users/:username/projects/:projectname', function(self)
 		--		origcreator = orig[1]
 		--	end
 		-- end
+		
+		if self.project.tags then
+			self.tags = explode_and_trim(',', self.project.tags or ',')
+		else
+			self.tags = nil
+		end
+		
         
         if ( self.project.origname and 
 			 self.project.origcreator and 
@@ -179,15 +194,15 @@ app:get('/users/:username/projects/:projectname', function(self)
 				self.project.origname)
 		end
 
-		self.project.remixes = db.select(
-			'* from projects where origname =  ? and origcreator = ? and (projectname != ? or username != ?) limit 10',
-			self.project.projectname,
-			self.project.username,
-			self.project.projectname,
-			self.project.username
-			)
+		--self.project.remixes = db.select(
+		--	'* from projects where ispublic = True and origname =  ? and origcreator = ? and (projectname != ? or username != ?) limit 10',
+		--	self.project.projectname,
+		--	self.project.username,
+		--	self.project.projectname,
+		--	self.project.username
+		--	)
 		self.project.remixCount =
-            Projects:count('origname =  ? and origcreator = ? and (projectname != ? or username != ?)',
+            Projects:count('ispublic = true and origname =  ? and origcreator = ? and (projectname != ? or username != ?)',
 			self.project.projectname,
 			self.project.username,
 			self.project.projectname,

@@ -128,12 +128,23 @@ app:get('/api/users/:username/become', function (self)
     end
 end)
 
-app:get('/api/projects/:selection/:limit/:offset(/:username)', function (self)
+app:get('/api/projects/:selection/:limit/:offset(/:username)(/:projectname)', function (self)
 
     local username = self.params.username or 'Examples'
+    local projectname = self.params.projectname or ''
     local list = self.params.list or ''
     local tag = self.params.tag or ''
     local notes = self.params.notes or ''
+    local category = self.params.category or ''
+    
+    if (self.params.selection == 'category' and category == '') or 
+		(self.params.selection == 'tag' and tag == '') or
+		(self.params.selection == 'notes' and notes == '') or
+		(self.params.selection == 'list' and list == '') 
+		then 
+		return err.notfound
+	end
+	
 
     local query = {
         newest = 'projectName, username from projects where isPublic = true order by id desc',
@@ -142,14 +153,19 @@ app:get('/api/projects/:selection/:limit/:offset(/:username)', function (self)
         shared = 'projectName, username from projects where isPublic = true and username = \'' .. username .. '\' order by id desc',
         notes = 'projectName, username from projects where isPublic = true and username = \'' .. username .. '\' and notes = \'' .. notes .. '\' order by id desc',
         list = 'projectName, username from projects where isPublic = true and username = \'' .. username .. '\' and projectName in ' .. list ..  ' order by id desc',
-        tag = 'projectName, username from projects where isPublic = true and admin_tags ilike \'%' .. tag .. '%\' order by id desc'
+        category = 'projectName, username from projects where isPublic = true and categories ilike \'%' .. category .. '%\' order by id desc',
+        tag = 'projectName, username from projects where isPublic = true and tags ilike \'%' .. tag .. '%\' order by id desc',
+        remixes = 'projectName, username from projects where isPublic = true and origname =  \'' .. projectname .. '\' and origcreator = \'' .. username .. '\' and (projectname != origname or username != origcreator)'
     }
-
-    return jsonResponse(
-        db.select(
-            query[self.params.selection] .. ' limit ? offset ?',
-            self.params.limit or 5,
-            self.params.offset or 0))
+    
+	if query[self.params.selection] then 
+		return jsonResponse(db.select(
+				query[self.params.selection] .. ' limit ? offset ?',
+				self.params.limit or 5,
+				self.params.offset or 0))				
+	else 
+		return err.notfound
+    end
 end)
 
 app:get('/api/users/:username/projects/:projectname/image', function (self)
@@ -449,18 +465,19 @@ app:match('update_project', '/api/users/:username/projects/:projectname/update/:
     OPTIONS = cors_options,
     POST = function (self)
         local project = Projects:find(self.params.username, self.params.projectname);
+        local visitor = Users:find(self.session.username)
+
 
         if (not project) then
             return err.nonexistentProject
         end
 
-        if (self.params.property == 'admin_tags') then
-            local visitor = Users:find(self.session.username)
-            if (not visitor.isadmin) then
+        if (self.params.property == 'categories') then
+            if (not visitor.isadmin and not visitor.ismoderator) then
                 return err.auth
             end
         else
-            if (self.params.username ~= self.session.username) then
+            if (self.params.username ~= self.session.username and not visitor.isadmin) then
                 return err.auth
             end
         end
@@ -468,6 +485,7 @@ app:match('update_project', '/api/users/:username/projects/:projectname/update/:
         local options = {}
         ngx.req.read_body()
         options[self.params.property] = ngx.req.get_body_data()
+        
         if (self.params.property == 'notes') then
             -- Special case! Notes are saved both in a column and inside the XML
             local xmlData = xml.load(project.contents)
@@ -475,11 +493,39 @@ app:match('update_project', '/api/users/:username/projects/:projectname/update/:
             options['contents'] = xml.dump(xmlData)
         end
 
-        if options['admin_tags'] == nil then
-            options['admin_tags'] = ""
-        end
+        if options['categories'] ~= nil then
+			options['categories'] = filter_tags(options['categories'])
+		else
+			if self.params.property == 'categories' then
+				options['categories']  = ""
+			end
+		end
+        
+        if options['tags'] ~= nil then
+			options['tags'] = filter_tags(options['tags'])
+		else
+			if self.params.property == 'tags' then
+				options['tags']  = ""
+			end
+		end
 
         project:update(options)
+        
+        if (self.params.property == 'tags') then        
+			return jsonResponse({
+			 text = options['tags']
+			})
+		else 
+			if (self.params.property == 'categories') then 
+				return jsonResponse({
+					text = options['categories']
+				})			
+			else 
+				return jsonResponse({
+					text = 'OK'
+				})
+			end
+		end
 
     end
 }))
@@ -526,7 +572,6 @@ app:match('save_project', '/api/projects/save', respond_to({
             end
 
             return jsonResponse({ text = 'project ' .. self.params.projectname .. ' updated' })
-
         else
 
 			if (xml.find(xmlData, 'origCreator')) then 
@@ -538,17 +583,25 @@ app:match('save_project', '/api/projects/save', respond_to({
 			if (xml.find(xmlData, 'remixHistory')) then 
 				remixhistory = xml.find(xmlData, 'remixHistory')[1] or ''
 			end
+			
+			if self.params.tags == nil then
+				tags = ""        
+			else
+				self.params.tags = filter_tags(self.params.tags)
+			end
 
             project = Projects:create({
                 projectname = self.params.projectname,
                 username = self.params.username,
                 ispublic = self.params.ispublic,
+                tags = self.params.tags,
                 contents = xmlString,
                 updated = db.format_date(),
                 created = db.format_date(),
                 origcreator = origcreator,
                 origname = origname,
                 remixhistory = remixhistory,
+                tags = self.params.tags,
                 notes = xml.find(xmlData, 'notes')[1] or '',
                 thumbnail = xml.find(xmlData, 'thumbnail')[1]
             })
@@ -705,7 +758,7 @@ app:match('alternate_image', '/api/users/:username/projects/:projectname/altimag
 
             project:update({ imageisfeatured = self.params.featureimage == 'true' })
             
-            return "asdfads"
+            return jsonResponse('image udated')
         else
             -- we are just asking for the alternate image for this project
             return altImageFor(project)

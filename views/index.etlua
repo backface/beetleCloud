@@ -18,9 +18,9 @@
 	
 	<div>
 <%
-	render("views/carousel", { collection = 'tag', title = 'Featured', tag = 'Featured'})
+	render("views/carousel", { collection = 'category', title = 'Featured', category = 'Featured'})
 	render("views/carousel", { collection = 'newest', title = 'Newest' })
-	render("views/carousel", { collection = 'tag', title = 'Getting Started', tag = 'Getting Started'})
+	render("views/carousel", { collection = 'category', title = 'Getting Started', category = 'Getting Started'})
 	render("views/carousel", { collection = 'popular', title = 'Popular' })
 %>
 </div>

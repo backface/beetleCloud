@@ -24,7 +24,8 @@
                 offset_<%= id %> +
                 "<%= '/' .. (username or '') %>?list=<%= list or '' %>" +
                 "&notes=<%= notes or '' %>" +
-                "&tag=<%= tag or '' %>",
+                "&tag=<%= tag or '' %>" +
+                "&category=<%= category or '' %>",
             true);
             ajax_<%= id %>.send();
         };
@@ -72,7 +73,7 @@
 
     <div class="title">
         <span class="title-text"><%= title %></span>
-        <span class="show-all"><a href="<%= (username and ('/users/' .. username ..'/') or '') .. 'projects/g/' .. collection .. '/' .. (list or tag or '') %>">Show all</a></span>
+        <span class="show-all"><a href="<%= (username and ('/users/' .. username ..'/') or '') .. 'projects/g/' .. collection .. '/' .. (list or tag or category or '') %>">Show all</a></span>
     </div>
 
     <div class="projects slider projects_<%= id %>" id="projects_<%= id %>">

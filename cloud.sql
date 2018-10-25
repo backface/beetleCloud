@@ -75,6 +75,8 @@ CREATE TABLE projects (
     views integer,
     imageisfeatured boolean,
 	admin_tags text,
+	categories text,
+	tags text,
 	origcreator text,
 	origname text,
 	remixhistory text
@@ -117,12 +119,34 @@ CREATE SEQUENCE users_id_seq
 
 ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
+
+--- PAGES ---
+
+CREATE TABLE pages (
+    id integer NOT NULL,
+    slug text NOT NULL,    
+    title text NOT NULL,
+    contents text,
+    last_edit_by dom_username,
+    last_edit_at timestamp with time zone
+);
+
+CREATE SEQUENCE pages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER SEQUENCE pages_id_seq OWNED BY pages.id;
+
 --- keys and contraints --
 
 ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq'::regclass);
-ALTER TABLE ONLY likes ALTER COLUMN id SET DEFAULT nextval('likes_id_seq'::regclass);
-ALTER TABLE ONLY projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq'::regclass);
+ALTER TABLE ONLY likes ALTER COLUMN id SET DEFAULT nextval('likes_id_seq'::regclass);y
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+ALTER TABLE ONLY pages ALTER COLUMN id SET DEFAULT nextval('pages_id_seq'::regclass);
+
 
 ALTER TABLE ONLY comments ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY likes ADD CONSTRAINT likes_pkey PRIMARY KEY (id);
@@ -133,6 +157,10 @@ ALTER TABLE ONLY comments ADD CONSTRAINT comments_projectname_fkey FOREIGN KEY (
 ALTER TABLE ONLY likes ADD CONSTRAINT likes_liker_fkey FOREIGN KEY (liker) REFERENCES users(username);
 ALTER TABLE ONLY likes ADD CONSTRAINT likes_projectname_fkey FOREIGN KEY (projectname, projectowner) REFERENCES projects(projectname, username);
 ALTER TABLE ONLY projects ADD CONSTRAINT projects_username_fkey FOREIGN KEY (username) REFERENCES users(username);
+
+ALTER TABLE ONLY pages ADD CONSTRAINT pages_pkey PRIMARY KEY (slug);
+ALTER TABLE ONLY pages ADD CONSTRAINT pages_username_fkey FOREIGN KEY (username) REFERENCES users(username);
+
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
 REVOKE ALL ON SCHEMA public FROM postgres;

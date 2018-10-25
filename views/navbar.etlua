@@ -43,7 +43,7 @@
 					data-toggle="dropdown" role="button"
 					aria-haspopup="true" aria-expanded="false">
 					<img width='32' height='32' class="img-circle gravatar" style="margin-top:-8px" alt="gravatar"
-						src="https://www.gravatar.com/avatar/<%- session.gravatar %>?s=24&d=http%3A%2F%2Fwww.turtlestitch.org%2Fstatic%2Fimg%2Fturtle.png" />
+						src="https://www.gravatar.com/avatar/<%- session.gravatar %>?s=24&d=https%3A%2F%2Fwww.turtlestitch.org%2Fstatic%2Fimg%2Fturtle.png" />
 				<%- session.username %>
 						<span class="caret"></span></a>
 				  <ul class="dropdown-menu">

@@ -284,9 +284,16 @@ border-radius: 4px;
 .notes pre {min-height:5em}
 .notes pre.publ {font-family: Roboto;border:0;background:none;padding:0}
 .notes .content {min-height:50px}
-.notes .inplace {margin-bottom:50px;background:#f9f9f9}
+.notes .inplace {margin-bottom:30px;background:#f9f9f9;padding:5px; border: 1px dashed #ccc}
 
-.updatebutton {float:right;margin-top:-50px}
+.about .inplace {margin-bottom:30px;background:#f9f9f9;padding:5px; border: 1px dashed #ccc}
+.location .inplace {margin-bottom:30px;background:#f9f9f9;padding:5px; border: 1px dashed #ccc}
+
+#taglinks a, #catlinks a { padding-right:10px}
+#taglinks, #catlinks { padding-left:30px}
+
+
+.updatebutton {float:right;margin-top:-30px}
 
 .myprojects .browser {min-height:300px}
 .myprojects .search {width:90%}
@@ -522,6 +529,7 @@ img.fluid {
 }
 
 
+.light {color:#aaa}
 
 h3 a::before { 
   display: block; 

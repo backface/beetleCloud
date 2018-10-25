@@ -15,6 +15,6 @@
         --'Simple geometric shapes',
 
     for k, title in pairs(shapeCollections) do
-        render("views/carousel", { collection = 'tag', title = title, tag = title })
+        render("views/carousel", { collection = 'category', title = title, category = title })
     end
 %>
