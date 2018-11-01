@@ -5,11 +5,17 @@
 
 local app = require 'app'
 local respond_to = require('lapis.application').respond_to
+local db = require 'lapis.db'
 local Model = require('lapis.db.model').Model
 local config = require "lapis.config".get()
+local slugify = require("lapis.util").slugify
 
 local Users = Model:extend('users', {
     primary_key = { 'username' }
+})
+
+local Pages = Model:extend('pages', {
+    primary_key = { 'slug' }
 })
 
 local path = "pages/"
@@ -21,22 +27,23 @@ local path = "pages/"
 --end)
 
 app:get('pageview', '/page/:slug', function(self)
-    self.visitor = Users:find(self.session.username)
-	slug  = self.params.slug:gsub('%W','')
-	local f=io.open(path .. slug .. ".etlua")
-	if f~=nil then 
-		self.content = f:read("*a")
-		f:close() 
-		self.page_title = slug
-		self.view = self.content
+
+	self.visitor = Users:find(self.session.username)
+	self.slug = slugify(self.params.slug)
+    self.page = Pages:find(self.slug)
+    
+    if self.page then		
+		self.content = self.page.content
+		self.title = self.page.title
+		page_title = self.title		
 		return { render = "pageview" } 
-	else 
-		return { render = 'notfound' }
-	end
+	else
+		return { render = "notfound" } 
+	end	
 end)
 
 app:get('/page/view/:slug', function(self)
-	slug  = self.params.slug:gsub('%W','')
+	slug  = slugify(self.params.slug)
     return { redirect_to = '/page/' .. slug }
 end)
 
@@ -44,15 +51,31 @@ end)
 
 app:get('/page/edit/:slug', function(self)
 	self.visitor = Users:find(self.session.username)
+	self.slug = slugify(self.params.slug)
+    self.page = Pages:find(self.slug)
+
 	if self.visitor and self.visitor.isadmin then	
-		slug  = self.params.slug:gsub('%W','')
-		local f=io.open(path .. slug .. ".etlua")
-		if f~=nil then
-				self.content = f:read("*a")
-				f:close()
-			else self.content = ""
+
+		if self.page then
+			self.content = self.page.content or ""
+			self.title = self.page.title or ""
+		else
+			self.content = ""
+			self.title = ""			
+				
+	--	else 	
+	--		slug  = self.params.slug:gsub('%W','')
+	--		local f=io.open(path .. slug .. ".etlua")
+	--		if f~=nil then
+	--				self.content = f:read("*a")
+	--				f:close()
+	--			else self.content = ""
+	--		end
+	--		return { render = "page_edit" } 
 		end
-		return { render = "page_edit" } 
+		
+		return { render = "page_edit" }  
+
 	else
 		return { render = 'noaccess' }
 	end		
@@ -62,22 +85,36 @@ end)
 app:match('update_page', '/page/save/:slug', respond_to({
     OPTIONS = cors_options,
     POST = function (self)
-		self.visitor = Users:find(self.session.username)	
+		self.slug = slugify(self.params.slug)
+		
+		self.visitor = Users:find(self.session.username)
+		self.page = Pages:find(self.slug)
+
 		if self.visitor and self.visitor.isadmin then			
-			slug  = self.params.slug:gsub('%W','')		
 			
-			local f, err=io.open(path .. slug .. ".etlua",'w')
-			if f~=nil  then
-				f:write(self.params.content)
-				f:close()
-				f=io.open(path .. slug .. ".etlua",'r')
-				local output = f:read('*all')
-				f:close()
-				 
-				return { redirect_to = '/page/' .. slug }
-			else 
-				return { redirect_to = err }
+			if self.page then
+				self.page:update({
+					title = self.params.title or "",
+					content = self.params.content or "",
+					last_edit_by = self.session.username,
+					last_edit_at = db.format_date()
+				})
+			else
+				page = Pages:create({
+					slug = slugify(self.slug),
+					title = self.params.title or "",
+					content = self.params.content or "",
+					last_edit_by = self.session.username,
+					last_edit_at = db.format_date()
+				})
+				
+				if not page then
+					return { redirect_to = err }
+				end
 			end
+			
+			return { redirect_to = '/page/' .. self.slug }
+
 		else
 			return { render = 'noaccess' }
 		end

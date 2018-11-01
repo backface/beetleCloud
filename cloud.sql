@@ -126,7 +126,7 @@ CREATE TABLE pages (
     id integer NOT NULL,
     slug text NOT NULL,    
     title text NOT NULL,
-    contents text,
+    content text,
     last_edit_by dom_username,
     last_edit_at timestamp with time zone
 );

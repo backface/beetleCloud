@@ -281,11 +281,6 @@ app:match('login', '/api/users/login', respond_to({
         --end
         
 		if (user == nil) then
-			local rUsers = Model:extend('users', {
-				primary_key = { 'email'}
-			})
-			local user = rUsers:find(self.params.email)
-
             if comesFromWebClient then
                 return { redirect_to = '/login?fail=true&reason=No%20such%20user' }
             else

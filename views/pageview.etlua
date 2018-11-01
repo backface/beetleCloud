@@ -9,7 +9,9 @@
 	</div>
 	<div class="col-sm-6 dlink">
 	
-	<%- (view) %>
+	<h1><%- (title) %></h1>
+	
+	<%- (content) %>
 	
 	<p>&nbsp;</p>
 			
