@@ -86,7 +86,7 @@
 				</ul>
 			</div>
 
-			<a class="betalink" href="/beta#cloud:Username=<%= util.escape(project.username) %>&ProjectName=<%= util.escape(project.projectname) %>">
+			<a class="betalink" href="/beta#cloud:Username=<%= util.escape(project.username) %>&ProjectName=<%= util.escape(project.projectname) %>" style=" white-space: nowrap;">
 				Open in evolving Wheezy Needle (Alpha/Beta Testing!)
 			</a>
 			
@@ -99,7 +99,7 @@
 
             <hr />
             <div class="row stats">
-				<div class="col-sm-2">
+				<div class="col-xs-4 col-md-2">
 					<span id="likes">
 						<i <% if (session.username ~= '') then %> onclick="toggleLike()" <% end %>
 						class="likebutton clickable fa fa-thumbs-o-up fa-2x <%= project.likedByUser and 'liked' %>"
@@ -124,11 +124,11 @@
 					</div>
 					<% end %>
 				</div>
-				<div class="col-sm-6 project-views">
+				<div class="col-xs-8 project-views">
 					<span>Views: <%= project.views or 0 %></span><br />
 					<span>Modified: <%= project.modifiedString %></span><br />
 					<% if project.shared then %><span>Shared: <%= project.sharedString %></span><br /><% end %>
-					<% if project.created then %><span>Created: <%= project.createdString %></span><br /><% end %>
+					<% if project.created and project.createdString ~= project.modifiedString then %><span>Created: <%= project.createdString %></span><br /><% end %>
 				</div>
             </div>
 
