@@ -18,6 +18,7 @@ package.loaded.bcrypt = bcryptlib
 -- This module only takes care of the index page
 app:get('/', function(self)
     self.db = db
+    self.page_title = "Code! .. Draw! .. Stitch!"
     return { render = 'index' }
 end)
 

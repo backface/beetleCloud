@@ -147,7 +147,7 @@ app:get('/api/projects/:selection/:limit/:offset(/:username)(/:projectname)', fu
 	
 
     local query = {
-        newest = 'projectName, username from projects where isPublic = true order by id desc',
+        newest = 'projectName, username from projects where isPublic = true order by updated desc',
         popular = 'count(*) as likecount, projects.projectName, projects.username from projects, likes where projects.isPublic = true and projects.projectName = likes.projectName and projects.username = likes.projectowner group by projects.projectname, projects.username order by likecount desc',
         favorite = 'distinct projects.id, projects.projectName, projects.username from projects, likes where projects.projectName = likes.projectName and projects.username = likes.projectowner and likes.liker = \'' .. username .. '\' group by projects.projectname, projects.username order by projects.id desc',
         shared = 'projectName, username from projects where isPublic = true and username = \'' .. username .. '\' order by id desc',
