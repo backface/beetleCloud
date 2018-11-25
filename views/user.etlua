@@ -76,6 +76,7 @@
 				<div class="admin">
 					<div align="center">
 						<a class="btn btn-danger" onclick="becomeUser()">Become this user</a>
+						<a class="btn btn-danger" onclick="deleteUser()">Delete this user</a>
 					</div>
 				</div>
 			<% end %>
@@ -111,15 +112,31 @@
 				if (!result) return;
 				ajax.onreadystatechange = function () {
 					bootbox.alert('You are now <%= user.username %>.')
-					window.location.reload(true);
-					//window.location = "/users/<%= user.username %>/";
+					//window.location.reload(true);
+					window.location.href = "/users/<%= user.username %>/";
 				};
 				ajax.open('GET', '/api/users/<%= user.username %>/become', true);
 				ajax.send();
 			}
 			bootbox.confirm(message, callback);
         };
-    </script>
+
+		function deleteUser () {
+			message = ('You are about to delete user "<%= user.username %>". <br /><br />' +
+					'Are you sure? Do you want to continue?');
+			callback = function(result)  {
+				if (!result) return;
+				ajax.onreadystatechange = function () {
+					bootbox.alert('User <%= user.username %> and all associated data is gone!')
+					//window.location.reload(true);
+					window.location.href = "/users/<%= user.username %>/";
+				};
+				ajax.open('GET', '/api/users/<%= user.username %>/delete', true);
+				ajax.send();
+			}
+			bootbox.confirm(message, callback);
+		};
+	</script>   
 <% end %>
 
 </div>

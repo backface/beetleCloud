@@ -676,6 +676,31 @@ app:match('remove_project', '/api/users/:username/projects/:projectname/delete',
     end
 }))
 
+app:match('delete_user', '/api/users/:username/delete', respond_to({
+    OPTIONS = cors_options,
+    GET = function (self)
+        -- can't use camel case because SQL doesn't care about case
+        local visitor = Users:find(self.session.username)
+
+        if (not Users:find(self.params.username)) then
+            return err.nonexistentUser
+        end
+
+        if not (visitor.isadmin) then
+            return err.auth
+        end
+
+		db.delete('likes', { liker = self.params.username })
+		db.delete('likes', { projectowner = self.params.username })
+		db.delete('comments', { author = self.params.username })
+		db.delete('comments', { projectowner = self.params.username })
+		db.delete('projects', { username = self.params.username })
+		db.delete('users', { username = self.params.username })
+
+    end
+}))
+
+
 app:match('toggle_like', '/api/users/:username/projects/:projectname/like', respond_to({
     OPTIONS = cors_options,
     GET = function (self)
