@@ -136,10 +136,13 @@ app:get('/api/projects/:selection/:limit/:offset(/:username)(/:projectname)', fu
     local tag = self.params.tag or ''
     local notes = self.params.notes or ''
     local category = self.params.category or ''
+    local s = self.params.s or ''
+
     
     if (self.params.selection == 'category' and category == '') or 
 		(self.params.selection == 'tag' and tag == '') or
 		(self.params.selection == 'notes' and notes == '') or
+		(self.params.selection == 'search' and s == '') or
 		(self.params.selection == 'list' and list == '') 
 		then 
 		return err.notfound
@@ -155,9 +158,11 @@ app:get('/api/projects/:selection/:limit/:offset(/:username)(/:projectname)', fu
         list = 'projectName, username from projects where isPublic = true and username = \'' .. username .. '\' and projectName in ' .. list ..  ' order by id desc',
         category = 'projectName, username from projects where isPublic = true and categories ilike \'%' .. category .. '%\' order by id desc',
         tag = 'projectName, username from projects where isPublic = true and tags ilike \'%' .. tag .. '%\' order by id desc',
-        remixes = 'projectName, username from projects where isPublic = true and origname =  \'' .. projectname .. '\' and origcreator = \'' .. username .. '\' and (projectname != origname or username != origcreator)'
+        remixes = 'projectName, username from projects where isPublic = true and origname =  \'' .. projectname .. '\' and origcreator = \'' .. username .. '\' and (projectname != origname or username != origcreator)',
+		search = 'projectName, username from projects where isPublic = true and projectname ~* \'' .. s .. '\' or notes ~* \'' .. s ..  '\' order by id desc'
     }
-    
+
+ 
 	if query[self.params.selection] then 
 		return jsonResponse(db.select(
 				query[self.params.selection] .. ' limit ? offset ?',

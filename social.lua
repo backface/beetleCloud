@@ -127,6 +127,14 @@ app:get('/projects/g/tag/:tag', function(self)
     return { render = 'projectgrid' }
 end)
 
+app:get('/projects/g/search/:s', function(self)
+	self.collection = "search"
+    self.s = self.params.s
+    self.username = ''
+    self.page_title =  'Search ' .. self.params.s
+    return { render = 'projectgrid' }
+end)
+
 app:get('/projects/g/category/:category', function(self)
 	self.collection = "category"
     self.category = self.params.category

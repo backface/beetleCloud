@@ -8,9 +8,10 @@
 					<i class="glyphicon glyphicon-search"></i></button>
 				</div>
 				-->
-				<input type="text" class="form-control" placeholder="Search" name="q" value=""
-					  oninput="search(this.value)"
+				<input type="text" class="form-control" placeholder="Search" name="q" value="<%= s %>"
+					oninput="search(this.value)"
 					onchange="search(this.value)" 
+					onkeypress="pressed(event)"
 					autocomplete="off" />
 			</div>
 		</div>
@@ -22,6 +23,13 @@
         searchDiv = document.getElementsByClassName('search')[0],
         resultsDiv = document.getElementById('search-results');
 
+	function pressed(e) {
+		if (e.keyCode == 13) {
+			window.location.href = '/projects/g/search/' + encodeURIComponent(e.target.value);
+		}
+	}
+    
+    
     function search (string) {
 
         if (string.length < 3) { 
@@ -33,7 +41,7 @@
 
         ajax.onreadystatechange = function () {
             if (ajax.readyState == 4 && ajax.status == 200) {
-                showResults(JSON.parse(ajax.responseText));
+                showResults(JSON.parse(ajax.responseText),string);
             }
         };
 
@@ -41,7 +49,7 @@
         ajax.send();
     };
 
-    function showResults (results) {
+    function showResults (results, string) {
         var users = results.users,
             projects = results.projects;
 
@@ -70,6 +78,11 @@
                                 'bug');
                     },
                     '');
+            
+            resultsDiv.innerHTML += '<br />'; 
+			resultsDiv.innerHTML += '<li class=""><a href="/projects/g/search/' + encodeURIComponent(string) + '"><i class="fa fa-th-large"> </i> &nbsp; show all projects...</a></li>';
+    
+           
         }
         
         if(!projects[0] && !users[0]) {

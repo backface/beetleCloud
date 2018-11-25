@@ -5,11 +5,12 @@
                local titleDict = {
                     newest = 'Newest Projects',
                     popular = 'Popular Projects',
-                    favorite = (username ~= 'Examples') and ('Projects liked by ' .. username) or ('Beetle Blocks team favorites'),
+                    favorite = (username ~= 'Examples') and ('Projects liked by ' .. username) or ('team favorites'),
                     shared = 'Projects shared by ' .. username,
                     notes = notes,
                     category = category,
                     tag = tag,
+                    search = 'Search: ' .. s
                 }
             %>
             <%= titleDict[collection] or '' %>
@@ -47,7 +48,7 @@
             };
             // The second part of the query needs to be enclosed between double commas, as SQL strings are enclosed by single ones
             ajax.open('GET', '/api/projects/<%= collection %>/' + limit + '/' + offset + 
-				"<%= '/' .. (username or '') %>?list=<%= list or '' %>&notes=<%= notes or '' %>&tag=<%= tag or '' %>&category=<%= category or '' %>", 
+				"<%= '/' .. (username or '') %>?list=<%= list or '' %>&notes=<%= notes or '' %>&tag=<%= tag or '' %>&category=<%= category or '' %>&s=<%= s or '' %>", 
 				true
 			);
             ajax.send();
