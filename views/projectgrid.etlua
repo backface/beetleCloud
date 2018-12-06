@@ -10,7 +10,7 @@
                     notes = notes,
                     category = category,
                     tag = tag,
-                    search = 'Search: ' .. s
+                    search = 'Search: ' .. (s or "")
                 }
             %>
             <%= titleDict[collection] or '' %>

@@ -13,6 +13,8 @@ local config = require "lapis.config".get()
 
 require 'backend_utils'
 
+
+
 -- Database abstractions
 
 local Users = Model:extend('users', {
@@ -88,11 +90,12 @@ end)
 
 app:get('/users', function(self)
     self.page_title = "Users"
-
+	self.s = ''
     return { render = 'usergrid' }
 end)
 
 app:get('/users/:username', function(self)
+	self.s = ''
     self.user = Users:find(self.params.username)
     if self.user then
         self.user.joinedString = dateString(self.user.joined)
@@ -146,7 +149,8 @@ end)
 app:get('/users/:username/projects/:projectname', function(self)
     self.visitor = Users:find(self.session.username)
     self.project = Projects:find(self.params.username, self.params.projectname)
-
+	self.s = ''
+	
     if (self.project and
         (self.project.ispublic or (self.visitor and self.visitor.isadmin) or
             self.session.username == self.project.username)) then

@@ -159,7 +159,7 @@ app:get('/api/projects/:selection/:limit/:offset(/:username)(/:projectname)', fu
         category = 'projectName, username from projects where isPublic = true and categories ilike \'%' .. category .. '%\' order by id desc',
         tag = 'projectName, username from projects where isPublic = true and tags ilike \'%' .. tag .. '%\' order by id desc',
         remixes = 'projectName, username from projects where isPublic = true and origname =  \'' .. projectname .. '\' and origcreator = \'' .. username .. '\' and (projectname != origname or username != origcreator)',
-		search = 'projectName, username from projects where isPublic = true and projectname ~* \'' .. s .. '\' or notes ~* \'' .. s ..  '\' order by id desc'
+		search = 'projectName, username from projects where isPublic = true and projectname ~* \'' .. s .. '\' or notes ~* \'' .. s ..  '\' or tags ilike \'%' .. s .. '%\' order by id desc'
     }
 
  
