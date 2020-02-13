@@ -12,16 +12,33 @@ local app = require 'app'
 --end)
 
 app:get('/categories', function(self)
+	self.s = ''
 	self.page_title = "Categories"
     return { render = 'categories' }
 end)
 
 app:get('/run', function(self)
+	self.s = ''
 	self.page_title = "Run"
     return { render = 'run' }
 end)
 
 app:get('/beta', function(self)
+	self.s = ''
 	self.page_title = "Development testing"
     return { render = 'beta' }
 end)
+
+app:get('/v2.0', function(self)
+	self.s = ''
+	self.page_title = "legacy (old) version"
+    return { render = 'old' }
+end)
+
+
+app:get('/old', function(self)
+	self.s = ''
+	self.page_title = "legacy (old) version"
+    return { render = 'old' }
+end)
+

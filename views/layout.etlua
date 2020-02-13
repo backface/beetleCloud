@@ -6,8 +6,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title><%= page_title or "" %><% if (page_title) then %> / <% end %>TurtleStitch - Coded Embroidery</title>
 
-	<link rel="shortcut icon" href="/static/img/favicon.ico" />
-	<link rel="icon" href="/static/img/favicon.png" type="image/png">
+		<link rel="shortcut icon" href="/static/img/favicon.ico" />
+		<link rel="icon" href="/static/img/favicon.png" type="image/png">
 
 	<% render("views/meta") %>
 
@@ -23,10 +23,36 @@
 	<script src="/static/lib/slick-carousel/slick/slick.js"></script>
 	<script src="/static/lib/moment/min/moment.min.js"></script>
 	<script src="/static/js/turtlestitch.js"></script>
+	
+	
 </head>
 <body>
 
 <% render("views/navbar") %>
+
+<!--
+<div id="whizzyalert" class="alert alert-warning alert-dismissible" style="width:100%;text-align:center;margin-top:-16px;z-index:999;display: block !important;">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <div class="container">	
+	<strong>Important News!</strong> We have upgraded to our new version "Whizzy Needle" as of April 12th, 2019! <a href="/page/whatsnew" style="color:black;text-decoration:underline">Please read all about important changes here</a>!
+  </div>
+</div>
+-->
+
+<!--
+<script>
+	if (!localStorage["-whizzyUpdate-alertVisited"]) {
+		$("#whizzyalert").slideDown();
+	} else {
+		$("#whizzyalert").hide()
+	}
+	
+	$("#whizzyalert .close").click(  function() {
+		localStorage["-whizzyUpdate-alertVisited"] = true;
+	});
+</script>
+-->
+
 
 <div class="content">
 	<div class="container">

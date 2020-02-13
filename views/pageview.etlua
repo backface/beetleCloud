@@ -7,7 +7,7 @@
 		<% end %>
 
 	</div>
-	<div class="col-sm-6 dlink">
+	<div class="col-sm-8 dlink">
 	
 	<h1><%- (title) %></h1>
 	

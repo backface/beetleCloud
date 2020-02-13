@@ -15,7 +15,21 @@
 
 
 <script>
+		
+
 $(document).ready(function(){
+
+	if ($("#whizzyalert").is(':visible')) {
+		$("#whizzyalert").css("position","fixed");
+		$(".run iframe").css("padding-top",110);
+	}
+	
+	/*
+  $("#whizzyalert .close").click(  function() {
+		$(".run iframe").css("padding-top",53);
+	});
+  */
+  
 	$(".footer").hide();
 	url = new URL(window.location.href);
 	u = "";
@@ -29,6 +43,7 @@ $(document).ready(function(){
 		$(".loading").hide();
 	});
 	$("html").css("overflow","hidden");
+
 });
 </script>
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SCRIPTPATH=$(cd ${0%/*} && pwd -P)
-export PGPASSWORD=`cat $SCRIPTPATH/../config.lua | grep password | tail -n1 | sed -E "s/.*'(.*)'.*/\1/g"`
+export PGPASSWORD=`cat $SCRIPTPATH/../config.lua | grep -w password | tail -n1 | sed -E "s/.*'(.*)'.*/\1/g"`
 
 ###########################
 ####### LOAD CONFIG #######
@@ -58,7 +58,13 @@ fi;
 ###########################
 
 
-FINAL_BACKUP_DIR=$BACKUP_DIR"`date +\%Y-\%m-\%d`/"
+if [ $ENABLE_DATEBASED_FOLDERS = "yes" ]
+then
+    FINAL_BACKUP_DIR=$BACKUP_DIR"`date +\%Y-\%m-\%d`/"
+else
+    FINAL_BACKUP_DIR=$BACKUP_DIR
+fi
+
 
 echo "Making backup directory in $FINAL_BACKUP_DIR"
 
@@ -135,6 +141,18 @@ echo -e "--------------------------------------------\n"
 
 for DATABASE in `psql -h "$HOSTNAME" -U "$USERNAME" -At -c "$FULL_BACKUP_QUERY" postgres`
 do
+    if [ $ENABLE_PLAIN_BACKUPS = "yes" ]
+    then
+        echo "Plain backup of $DATABASE"
+
+        if ! pg_dump -w -Fp -h "$HOSTNAME" -U "$USERNAME" "$DATABASE" > $FINAL_BACKUP_DIR"$DATABASE".sql.in_progress; then
+            echo "[!!ERROR!!] Failed to produce plain backup database $DATABASE" 1>&2
+        else
+            mv $FINAL_BACKUP_DIR"$DATABASE".sql.gz.in_progress $FINAL_BACKUP_DIR"$DATABASE".sql
+        fi
+    fi
+
+
     if [ $ENABLE_PLAIN_BACKUPS = "yes" ]
     then
         echo "Plain backup of $DATABASE"

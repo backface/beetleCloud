@@ -7,12 +7,14 @@
 					<i class="glyphicon glyphicon-search"></i></button>
 				</div>
 				-->
-				<input type="text" class="form-control" placeholder="Search" name="q" value="<%= s or '' %>"
+				<input type="text" class="form-control" placeholder="Search" name="q" value="<% if s ~= undefined then %><%= s %><% end %>"
 					oninput="search(this.value)"
 					onchange="search(this.value)" 
 					onkeypress="pressed(event)"
 					autocomplete="off" />
 			</div>
+			
+			
 		</div>
 	<ul id="search-results" class="dropdown-menu search-results"></ul>
 </li>

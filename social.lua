@@ -13,7 +13,7 @@ local config = require "lapis.config".get()
 
 require 'backend_utils'
 
-
+local s = ''
 
 -- Database abstractions
 
@@ -54,7 +54,7 @@ app:get('/1', function(self)
 	featured = db.select(query['featured'] .. ' limit ? offset ?', 15,0)
 	gettingstarted = db.select(query['gettingstarted'] .. ' limit ? offset ?', 15,0)
 	
-    return { render = 'index2' }
+  return { render = 'index2' }
 end)
 
 app:get('/signup', function(self)
@@ -89,14 +89,20 @@ app:get('/logout', function(self)
 end)
 
 app:get('/users', function(self)
+  local visitor = Users:find(self.session.username)
+
+  if (visitor and visitor.isadmin) then
     self.page_title = "Users"
-	self.s = ''
+    self.s = ''
     return { render = 'usergrid' }
+  else
+			return { render = 'noaccess' }
+		end
 end)
 
 app:get('/users/:username', function(self)
-	self.s = ''
     self.user = Users:find(self.params.username)
+    self.s = ''
     if self.user then
         self.user.joinedString = dateString(self.user.joined)
         self.visitor = Users:find(self.session.username)
@@ -118,6 +124,7 @@ end)
 app:get('/projects/g/:collection', function(self)
     self.collection = self.params.collection
     self.username = ''
+    self.s = ''
     self.page_title =  self.params.collection .. " Projects"
     return { render = 'projectgrid' }
 end)
@@ -125,6 +132,7 @@ end)
 app:get('/projects/g/tag/:tag', function(self)
 	self.collection = "tag"
     self.tag = self.params.tag
+    self.s = ''
     self.username = ''
     self.page_title =  self.params.tag
     return { render = 'projectgrid' }
@@ -142,6 +150,7 @@ app:get('/projects/g/category/:category', function(self)
 	self.collection = "category"
     self.category = self.params.category
     self.username = ''
+    self.s = ''
     self.page_title =  self.params.category
     return { render = 'projectgrid' }
 end)
@@ -149,7 +158,7 @@ end)
 app:get('/users/:username/projects/:projectname', function(self)
     self.visitor = Users:find(self.session.username)
     self.project = Projects:find(self.params.username, self.params.projectname)
-	self.s = ''
+    self.s = ''
 	
     if (self.project and
         (self.project.ispublic or (self.visitor and self.visitor.isadmin) or
@@ -284,8 +293,12 @@ app:match("password_reset", "/password_reset/:reset_code", respond_to({
             self.fail = true
             self.message = "Your reset code is invalid."
             return { render = 'password_reset' }
+        elseif (not user.confirmed) then
+            self.page_title = "Failed: Reset Password"
+            self.fail = true
+            self.message = "User is not yet confirmed."
+            return { render = 'password_reset' }
         else
-
             if (self.params.password ~= self.params.confirm_password) then
                 self.fail = true
                 self.message = "Passwords do not match"
@@ -316,7 +329,12 @@ app:match("password_reset", "/password_reset/:reset_code", respond_to({
         if (not user) then
             self.page_title = "Failed: Reset Password"
             self.fail = true
-            self.message = "Your reset code is invalid."
+            self.message = "Your reset code is invalid. Request a new reset link"
+        elseif (not user.confirmed) then
+            self.page_title = "Failed: Reset Password"
+            self.fail = true
+            self.message = "User is not yet confirmed."
+            return { render = 'password_reset' }
         else
             self.page_title = "Reset Password"
         end
@@ -350,7 +368,7 @@ app:match("change_password", "/change_password", respond_to({
 				end
 
 				options = {
-                    password = unistd.crypt(self.params.password, salt),
+            password = unistd.crypt(self.params.password, salt),
 				}
 				user:update(options)
 			else
@@ -372,8 +390,6 @@ app:match("change_password", "/change_password", respond_to({
             self.fail = true
             self.message = "You are not logged in"
         end
-
-
         return { render = 'change_password' }
     end
 }))

@@ -1,0 +1,10 @@
+
+<meta property="og:title" content="http://www.turtlestitch.org/<%= params.projectname %> @ TurtleStitch" />
+<meta property="og:image" content="<%= self.project.thumbnail %>"/>
+<meta property="og:url" content="http://www.turtlestitch.org/" />
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="TurtleStitch" />
+<meta name="twitter:card" content="summary"/>\n'
+<meta name="twitter:title" content="<%= self.params.projectname %> @ TurtleStitch" />
+<meta name="twitter:domain" content="turtlestitch.org"/>'
+<meta name=twitter:image  content="http://www.turtlestitch.org/<%= self.project.thumbnail %>"/>

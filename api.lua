@@ -286,38 +286,40 @@ app:match('login', '/api/users/login', respond_to({
         --end
         
 		if (user == nil) then
-            if comesFromWebClient then
-                return { redirect_to = '/login?fail=true&reason=No%20such%20user' }
-            else
-                return errorResponse('invalid username')
-            end    
+      if comesFromWebClient then
+          return { redirect_to = '/login?fail=true&reason=No%20such%20user' }
+      else
+          return errorResponse('invalid username')
+      end    
         --elseif (bcrypt.verify(self.params.password, user.password)) then
-        elseif (unistd.crypt(self.params.password, salt) == user.password) then
-			if not user.confirmed then
-				if comesFromWebClient then
-					return { redirect_to = '/login?fail=true&reason=unconfirmed%20user' }
-				else
-					return errorResponse('user unconfirmed')
-				end
-			end
-            self.session.username = user.username
-            self.session.email = user.email
-            self.session.gravatar = md5.sumhexa(user.email)
-            if comesFromWebClient then
-                return { redirect_to = '/' }
-            else
-                return jsonResponse({
-                    text = 'User ' .. self.params.username .. ' logged in'
-                })
-            end
+  
+    elseif not user.confirmed then
+        if comesFromWebClient then
+          return { redirect_to = '/login?fail=true&reason=unconfirmed%20user' }
         else
-            if comesFromWebClient then
-                return { redirect_to = '/login?fail=true&reason=invalid%20password' }
-            else
-                return errorResponse('invalid password')
-            end
+          return errorResponse('user unconfirmed')
         end
+    
+    elseif (unistd.crypt(self.params.password, salt) == user.password) then
+        
+      self.session.username = user.username
+      self.session.email = user.email
+      self.session.gravatar = md5.sumhexa(user.email)
+      if comesFromWebClient then
+          return { redirect_to = '/' }
+      else
+          return jsonResponse({
+              text = 'User ' .. self.params.username .. ' logged in'
+          })
+      end
+    else
+      if comesFromWebClient then
+          return { redirect_to = '/login?fail=true&reason=invalid%20password' }
+      else
+          return errorResponse('invalid password')
+      end
     end
+  end
 }))
 
 app:match('logout', '/api/users/logout', respond_to({
@@ -392,22 +394,22 @@ app:match('new_user', '/api/users/new', respond_to({
             confirmed = false
         })
         
-        reset_code = md5.sumhexa(string.reverse(tostring(socket.gettime() * 10000)))
-            local options = {reset_code = reset_code}
-            user:update(options)
-            ok, err = send_mail(self.params.email, "Confirm your TurtleStitch account",
-                "Welcome to TurtleStitch, \n\n"
-                .. "Thank you for signing up with TurtleStitch. Please confirm and activate your new account by following this link:\n\n"
-                .. self:build_url(self:url_for("confirm_user", { reset_code = reset_code }))
-                .. "\n\nIf you do not verify your account within the next 24 hours, it will be scheduled for deletion.\n"
-                .. config.mail_footer
-            )
-            if not ok then
-                self.fail = true
-                self.message = "Sending E-Mail failed: " .. err
-            else
-                self.success = true
-            end
+        confirm_code = md5.sumhexa(string.reverse(tostring(socket.gettime() * 10000)))
+        local options = {confirm_code = confirm_code}
+        user:update(options)
+        ok, err = send_mail(self.params.email, "Confirm your TurtleStitch account",
+            "Welcome to TurtleStitch, \n\n"
+            .. "Thank you for signing up with TurtleStitch. Please confirm and activate your new account by following this link:\n\n"
+            .. self:build_url(self:url_for("confirm_user", { confirm_code = confirm_code }))
+            .. "\n\nIf you do not verify your account within the next 24 hours, it will be scheduled for deletion.\n"
+            .. config.mail_footer
+        )
+        if not ok then
+            self.fail = true
+            self.message = "Sending E-Mail failed: " .. err
+        else
+            self.success = true
+        end
 
         if (comesFromWebClient) then
             return { redirect_to = '/user_created' }
@@ -417,13 +419,13 @@ app:match('new_user', '/api/users/new', respond_to({
     end
 }))
 
-app:match("confirm_user", "/confirm_user/:reset_code", respond_to({
+app:match("confirm_user", "/confirm_user/:confirm_code", respond_to({
     OPTIONS = cors_options,
     GET = function(self)
         local rUser = Model:extend('users', {
-            primary_key = { 'reset_code'}
+            primary_key = { 'confirm_code'}
         })
-        local user = rUser:find(self.params.reset_code);
+        local user = rUser:find(self.params.confirm_code);
         if (not user) then
             self.page_title = "Failed: Confirm user"
             self.fail = true
@@ -432,7 +434,8 @@ app:match("confirm_user", "/confirm_user/:reset_code", respond_to({
             self.page_title = "Confirm User"
             options = {
                 confirmed = true,
-                reset_code = ""
+                reset_code = "",
+                confirm_code = "",
             }
             user:update(options)       
         end

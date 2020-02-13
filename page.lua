@@ -31,7 +31,8 @@ app:get('pageview', '/page/:slug', function(self)
 	self.visitor = Users:find(self.session.username)
 	self.slug = slugify(self.params.slug)
     self.page = Pages:find(self.slug)
-    
+	self.s = ''
+	 
     if self.page then		
 		self.content = self.page.content
 		self.title = self.page.title
@@ -53,7 +54,8 @@ app:get('/page/edit/:slug', function(self)
 	self.visitor = Users:find(self.session.username)
 	self.slug = slugify(self.params.slug)
     self.page = Pages:find(self.slug)
-
+	self.s = ''
+	 
 	if self.visitor and self.visitor.isadmin then	
 
 		if self.page then

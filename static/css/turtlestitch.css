@@ -267,6 +267,8 @@ border-radius: 4px;
 
 .navbar {border-bottom:1px dotted #666;}
 .navbar-right a {text-transform:uppercase}
+.navbar-right a.username {text-transform:none}
+
 /*.navbar-nav > li > a  {padding: 10px 15px;}*/
 .navbar-brand { padding:10px 8px;height:20px}
 /*.navbar-collapse {padding:0px 15px;margin-top:0px;}*/
@@ -381,7 +383,6 @@ border-radius: 4px;
 	display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 .run iframe {height:100%;width:100%;border:0;padding-top:55px}
@@ -492,6 +493,13 @@ img.fluid {
 .sending, .senderror {width:100%;text-align:center;}
 .senderror {color:red}
 
+
+.brandtext {padding-left:10px}
+
+@media (min-width:768px){
+  .brandtext {display:none}
+}
+
 @media(max-width:970px) {
 	.navbar ul { margin-right:0}
 	.navbar .search {margin-left:0px;}
@@ -548,3 +556,4 @@ a h3::before {
   visibility: hidden; 
   pointer-events: none;
 }
+

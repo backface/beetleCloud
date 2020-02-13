@@ -86,10 +86,11 @@
 				</ul>
 			</div>
 
+<!--
 			<a class="betalink" href="/beta#cloud:Username=<%= util.escape(project.username) %>&ProjectName=<%= util.escape(project.projectname) %>" style=" white-space: nowrap;">
 				Open in Whizzy Needle (Beta Testing!)
 			</a>
-			
+-->
 			<% if visitor and visitor.isadmin then %>
 				<br /><br />
 				<div class="betalink">

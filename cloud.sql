@@ -41,6 +41,27 @@ CREATE SEQUENCE comments_id_seq
 ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
 
 
+--- TAGS ---
+
+CREATE TABLE tags (
+    projectname text,
+    projectowner dom_username,
+    tagger dom_username,
+    tag text,
+    id integer NOT NULL,
+    date timestamp with time zone
+);
+
+CREATE SEQUENCE comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER SEQUENCE tags_id_seq OWNED BY tags.id;
+
+
 --- LIKES ---
 
 CREATE TABLE likes (
@@ -102,12 +123,13 @@ CREATE TABLE users (
     joined timestamp with time zone,
     about text,
     location text,
-	isadmin boolean,
-	ismoderator boolean,
-	reset_code text,
-	notify_comment boolean default true,
-	notify_like boolean default true,
-	confirmed boolean default true
+    isadmin boolean,
+    ismoderator boolean,
+    reset_code text,
+    confirm_code text,
+    notify_comment boolean default true,
+    notify_like boolean default true,
+    confirmed boolean default true
 );
 
 CREATE SEQUENCE users_id_seq
@@ -137,6 +159,8 @@ CREATE SEQUENCE pages_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+    
+    
 
 ALTER SEQUENCE pages_id_seq OWNED BY pages.id;
 
@@ -156,6 +180,8 @@ ALTER TABLE ONLY comments ADD CONSTRAINT comments_author_fkey FOREIGN KEY (autho
 ALTER TABLE ONLY comments ADD CONSTRAINT comments_projectname_fkey FOREIGN KEY (projectname, projectowner) REFERENCES projects(projectname, username);
 ALTER TABLE ONLY likes ADD CONSTRAINT likes_liker_fkey FOREIGN KEY (liker) REFERENCES users(username);
 ALTER TABLE ONLY likes ADD CONSTRAINT likes_projectname_fkey FOREIGN KEY (projectname, projectowner) REFERENCES projects(projectname, username);
+ALTER TABLE ONLY tags ADD CONSTRAINT tags_tagger_fkey FOREIGN KEY (liker) REFERENCES users(username);
+ALTER TABLE ONLY tags ADD CONSTRAINT tags_projectname_fkey FOREIGN KEY (projectname, projectowner) REFERENCES projects(projectname, username);
 ALTER TABLE ONLY projects ADD CONSTRAINT projects_username_fkey FOREIGN KEY (username) REFERENCES users(username);
 
 ALTER TABLE ONLY pages ADD CONSTRAINT pages_pkey PRIMARY KEY (slug);
