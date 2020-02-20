@@ -73,7 +73,7 @@
 					  </a>
 					</li>
 					<li role="presentation">
-					  <a role="menuitem" tabindex="-1" target="_blank" href="http://www.facebook.com/share.php?s=100&p[title]=<%= util.escape(project.projectname .. " on TurtleStitch: ")%>&p[url]=<%= build_url(ngx.var.request_uri) %>">
+					  <a role="menuitem" tabindex="-1" target="_blank" href="https://www.facebook.com/share.php?s=100&p[title]=<%= util.escape(project.projectname .. " on TurtleStitch: ")%>&p[url]=<%= build_url(ngx.var.request_uri) %>">
 						<i class="fa fa-facebook-official fa-fw"></i> Share on Facebook
 					  </a>
 					</li>
