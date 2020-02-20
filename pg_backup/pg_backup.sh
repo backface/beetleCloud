@@ -148,14 +148,14 @@ do
         if ! pg_dump -w -Fp -h "$HOSTNAME" -U "$USERNAME" "$DATABASE" > $FINAL_BACKUP_DIR"$DATABASE".sql.in_progress; then
             echo "[!!ERROR!!] Failed to produce plain backup database $DATABASE" 1>&2
         else
-            mv $FINAL_BACKUP_DIR"$DATABASE".sql.gz.in_progress $FINAL_BACKUP_DIR"$DATABASE".sql
+            mv $FINAL_BACKUP_DIR"$DATABASE".sql.in_progress $FINAL_BACKUP_DIR"$DATABASE".sql
         fi
     fi
 
 
-    if [ $ENABLE_PLAIN_BACKUPS = "yes" ]
+    if [ $ENABLE_PLAIN_GZIPPED_BACKUPS = "yes" ]
     then
-        echo "Plain backup of $DATABASE"
+        echo "Plain gzipped backup of $DATABASE"
 
         if ! pg_dump -w -Fp -h "$HOSTNAME" -U "$USERNAME" "$DATABASE" | gzip > $FINAL_BACKUP_DIR"$DATABASE".sql.gz.in_progress; then
             echo "[!!ERROR!!] Failed to produce plain backup database $DATABASE" 1>&2
