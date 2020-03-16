@@ -31,6 +31,7 @@
 			<a href="/page/tutorials">Tutorials</a><br />
 			<a href="/static/download/TurtleStitch-Cards-Beginners.pdf">Manual Cards</a><br />
 			<a href="/page/moreresources">Links and Resources</a><br />
+      <a href="/page/offlineuse">Offline Usage</a><br />
 			<a href="https://github.com/backface/turtlestitch">Source Code</a><br />			
 			<br />
 		</div>
@@ -39,7 +40,8 @@
 			<h5>FIND US ..</h5>
 			
 			<a href="/page/contact">Contact</a> &nbsp;  <br />
-			<a href="https://github.com/backface/turtlestitch/issues">Bugs?</a><br />			
+			<a href="https://github.com/backface/turtlestitch/issues">Bugs?</a><br />
+      <a href="http://newsletter.turtlestitch.org/subscription/LbaQjmuk">Newsletter</a><br />
 			<a class="custom-dbox-popup" href="https://donorbox.org/turtlestitch" target="_new">Donate!</a><br />
 			<br />
 			<a href="https://twitter.com/turtlestitch"><i class="fa fa-twitter fa-2x fa-fw"></i></a>

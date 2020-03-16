@@ -495,6 +495,7 @@ img.fluid {
 
 
 .brandtext {padding-left:10px}
+.donover {transform: rotate(-10deg);width:200px;position:relative;top:-40px;right:-50px;float:right}
 
 @media (min-width:768px){
   .brandtext {display:none}
@@ -534,6 +535,7 @@ img.fluid {
     .auto-clear .col-xs-3:nth-child(4n+1){clear:left;}
     .auto-clear .col-xs-4:nth-child(3n+1){clear:left;}
     .auto-clear .col-xs-6:nth-child(odd){clear:left;}
+    .donover { right:-10px; top:-30px }
 }
 
 

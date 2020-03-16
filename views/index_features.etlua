@@ -49,7 +49,7 @@
 	 </div>
 </div>
 
-<div style="transform: rotate(-10deg);width:200px;position:relative;top:-40px;right:-50px;float:right">
+<div style="" class="donover">
 <a class="dbox-donation-button donatebutton" href="https://donorbox.org/turtlestitch"  target="_new"
 	style=" 
 	color: #fff;text-decoration: none;font-size: 18px;

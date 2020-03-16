@@ -14,6 +14,7 @@ local respond_to = require('lapis.application').respond_to
 local xml = require('xml')
 local config = require "lapis.config".get()
 local unistd = require "posix.unistd"
+local http = require("socket.http")
 salt = "21"
 
 require 'backend_utils'
@@ -393,7 +394,14 @@ app:match('new_user', '/api/users/new', respond_to({
             joined = db.format_date(),
             confirmed = false
         })
-        
+
+        -- subscribe to newsletter
+        if self.params.newsletter then
+          local body = "EMAIL=" .. self.params.email .. "&FIRST_NAME=" .. self.params.username .. "&MERGE_CHECKBOX=no&REQUIRE_CONFIRMATION=no"
+          local url = "http://localhost.org:3000/api/subscribe/LbaQjmuk?access_token=d24daf9a3f051e0fa64ba1f5253b01140b5182cf"
+          b, c, h = http.request(url, body)
+        end
+
         confirm_code = md5.sumhexa(string.reverse(tostring(socket.gettime() * 10000)))
         local options = {confirm_code = confirm_code}
         user:update(options)
@@ -437,7 +445,13 @@ app:match("confirm_user", "/confirm_user/:confirm_code", respond_to({
                 reset_code = "",
                 confirm_code = "",
             }
-            user:update(options)       
+            user:update(options)
+
+            -- subscribe to user list
+            local body = "EMAIL=" .. user.email .. "&FIRST_NAME=" .. user.username .. "&MERGE_CHECKBOX=no&REQUIRE_CONFIRMATION=no"
+            local url = "http://localhost.org:3000/api/subscribe/8lrKTCjV?access_token=d24daf9a3f051e0fa64ba1f5253b01140b5182cf"
+            b, c, h = http.request(url, body)
+
         end
         return { render = 'user_confirmed' }
     end
@@ -460,7 +474,6 @@ app:match('update_user', '/api/users/:username/update/:property', respond_to({
         ngx.req.read_body()
         options[self.params.property] = ngx.req.get_body_data()
         user:update(options)
-
     end
 }))
 
