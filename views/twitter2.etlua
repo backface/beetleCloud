@@ -1,0 +1,38 @@
+<div id="tweets" class="tweets"></div>
+<div class="moretweets"><a href="https://twitter.com/turtlestitch">more tweets ...</a></span></div>
+
+<script type="text/javascript" src="/static/js/twitterFetcher_min.js"></script>
+<script>
+  var config = {
+    "profile": {"screenName": 'turtlestitch'},
+    "domId": 'tweets',
+    "maxTweets": 3,
+    "enableLinks": true, 
+    "showUser": false,
+    "showTime": true,
+    "showImages": true,
+    "lang": 'en',
+    "dataOnly": true,
+    "customCallback": populate
+  };
+  twitterFetcher.fetch(config);
+
+  function populate(tweets){
+    var html = '';    
+    for (var i = 0, lgth = tweets.length; i < lgth ; i++) {
+      var tweetObject = tweets[i];
+      html += '<div class="tw">';
+      html += '<blockquote class="twitter-tweet">'
+      html += tweetObject.tweet;
+      html += '&nbsp; <span style="font-size:0.7em">'
+      html += '<a href="' + tweetObject.permalinkURL + '">' + tweetObject.time + '</a>';
+      html += '</span>';
+      html += '</blockquote>';
+      html += '</div>';
+    }    
+    document.getElementById('tweets').innerHTML = html;   
+    var script = document.createElement('script');
+    script.src = "https://platform.twitter.com/widgets.js";
+    document.head.appendChild(script);
+  }
+</script>

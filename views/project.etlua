@@ -143,7 +143,7 @@
                     </span>
                     <i></i>
                     <span>
-                        <a class="btn btn-danger" onclick="shareProject()"><%= project.ispublic and "Unshare" or "Share" %></a>
+                        <a class="btn btn-danger" onclick="shareProject()" id="shareUnshareButton"><%= project.ispublic and "Unshare" or "Share" %></a>
                     </span>
 				</div>      
             <% end %>
@@ -436,8 +436,14 @@
 					'Are you sure you want to continue?',
 			callback = function (result) {
 				if (!result) return;
-				ajax.onreadystatechange = function () {
-					bootbox.alert('Project removed', function () { window.location = '/' });
+				ajax.onreadystatechange = function (e) {
+          if (ajax.readyState==4 && ajax.status==200) { 
+            var json = JSON.parse(ajax.responseText);
+            if (json.success == true)  
+              bootbox.alert('Project removed', function () { window.location = '/' });
+            else
+               bootbox.alert('It seems there was an error');
+            }
 				};
 				ajax.open('GET', '/api/users/<%= project.username %>/projects/<%= project.projectname %>/delete', true);
 				ajax.send();
@@ -451,10 +457,19 @@
 					'Are you sure you want to continue?';
 			callback = function (result) {
 				if (!result) return;
-				ajax.onreadystatechange = function () {
-					bootbox.alert('Project <%= project.ispublic and "unshared" or "shared" %>')
+				ajax.onreadystatechange = function (e) {
+          if (ajax.readyState==4 && ajax.status==200) {
+            var json = JSON.parse(ajax.responseText);
+            if (json.success == true) {
+              document.getElementById("shareUnshareButton").innerHTML = json.ispublic == true ? "Unshare" : "Share";
+              bootbox.alert(json.text);
+            } else
+              bootbox.alert('It seems there was an error');              
+            //bootbox.alert('Project <%= project.ispublic and "unshared" or "shared" %>')
+          }
 				};
-				ajax.open('GET', '/api/users/<%= project.username %>/projects/<%= project.projectname %>/visibility/?ispublic=<%= not project.ispublic %>', true);
+				ajax.open('GET', '/api/users/<%= project.username %>/projects/<%= project.projectname %>/visibility?ispublic=' +
+          (document.getElementById("shareUnshareButton").innerHTML == "Share"), true);
 				ajax.send();
 			}
 			bootbox.confirm(message, callback);

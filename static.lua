@@ -29,12 +29,18 @@ app:get('/beta', function(self)
     return { render = 'beta' }
 end)
 
-app:get('/v2.0', function(self)
+
+app:get('/v2.5', function(self)
 	self.s = ''
 	self.page_title = "legacy (old) version"
     return { render = 'old' }
 end)
 
+app:get('/v2.6', function(self)
+	self.s = ''
+	self.page_title = "Run"
+    return { render = 'run' }
+end)
 
 app:get('/old', function(self)
 	self.s = ''

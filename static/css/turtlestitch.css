@@ -559,3 +559,17 @@ a h3::before {
   pointer-events: none;
 }
 
+.tweets { display: flex; margin:40px 0px 10px 0px; font-size:0.8em;}
+.tweets div {width:33%; margin-right:5px;}
+.tweets iframe { border:0; width: 100%; height:auto; transform(scale:0.5); overflow:hidden; height:500px}
+.moretweets { width: 100%; padding-right:20px;text-align:right; margin-bottom:40px}
+
+@media (max-width:992px) {
+  #tweets div {width:50%;}
+  .tweets div:nth-child(3){display:none}
+}
+
+@media (max-width:461px) {
+  #tweets div {width:100%;}
+  .tweets div:nth-child(2){display:none}
+}

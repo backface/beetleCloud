@@ -3,7 +3,7 @@
 	<div class="slider top">
 
 		<div class="slide text-center">
-			<a href="https://sites.google.com/erhsnyc.net/turtlestitchcollaboration/home">
+			<a href="https://sites.google.com/view/exploring-coding-stitching-cul/home">
 				<img  src="/static/img/global_community.jpg" alt="" />
 			</a>	
 		</div>		
@@ -17,13 +17,15 @@
 		<div class="slide text-center">
 			<img data-lazy="/static/img/slide1.png" alt="" />
 		</div>
-			
+    
+    <!--
 		<div class="slide text-center">
 			<a href="https://makezine.com/2018/07/17/turtle-stitch-goes-code-embroidery/">
 				<img data-lazy="/static/img/make_slide.jpg" alt="" />
 			</a>	
 		</div>		
-
+    -->
+    
 		<div class="slide text-center">
 			<a href="/users/mash/projects/dragon curve"><img data-lazy="/static/img/slide2.jpg" alt=""></a>
 		</div>
@@ -39,13 +41,16 @@
 				<img class="first-slide" data-lazy="/static/img/cards2.jpg" alt="" />
 			</a>
 		</div>	
-		
+    
+    <!--
 		<div class="slide text-center">
 			<a href="/users/chmod/projects/random stitch length"><img data-lazy="/static/img/slide4.jpg" alt="" /></a>
 		</div>
 		<div class="slide text-center">
 			<a href="/users/mash/projects/bounce_test%202"><img data-lazy="/static/img/slide5.jpg" alt="" /></a>
 		</div>		
+    -->
+    
 	 </div>
 </div>
 

@@ -21,11 +21,9 @@ require 'backend_utils'
 
 -- Response generation
 
-errorResponse = function (errorText)
-    return jsonResponse({ error = errorText })
-end
 
-jsonResponse = function (json)
+
+local jsonResponse = function (json)
     return {
         layout = false,
         status = 200,
@@ -34,13 +32,17 @@ jsonResponse = function (json)
     }
 end
 
-cors_options = function (self)
+local errorResponse = function (errorText)
+    return jsonResponse({ error = errorText })
+end
+
+local cors_options = function (self)
     self.res.headers['access-control-allow-headers'] = 'Content-Type'
     self.res.headers['access-control-allow-method'] = 'POST, GET, OPTIONS'
     return { status = 200, layout = false }
 end
 
-err = {
+local err = {
     notLoggedIn = errorResponse('you are not logged in'),
     notfound = errorResponse('not found'),
     auth = errorResponse('authentication error'),
@@ -654,6 +656,8 @@ app:match('set_visibility', '/api/users/:username/projects/:projectname/visibili
             end
 
             return jsonResponse({
+                success = true,
+                ispublic = (self.params.ispublic ==  'true'),
                 text = 'project ' .. self.params.projectname .. ' is now ' ..
                 (self.params.ispublic == 'true' and 'public' or 'private')
             })
@@ -684,7 +688,7 @@ app:match('remove_project', '/api/users/:username/projects/:projectname/delete',
             db.delete('likes', { projectowner = self.params.username, projectname = self.params.projectname })
             db.delete('comments', { projectowner = self.params.username, projectname = self.params.projectname })
             project:delete()
-            return jsonResponse({ text = 'project ' .. self.params.projectname .. ' removed' })
+            return jsonResponse({ success = true, text = 'project ' .. self.params.projectname .. ' removed' })
         else
             return err.nonexistentProject
         end

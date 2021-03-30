@@ -1,11 +1,7 @@
 
-
 <h1 style="text-align:center">Turtlestitch - Coded Embroidery</h1>
 
-
-
 <% render("views/index_features") %>
-
 
 <div class="index-run">
 	<p><a href="/run" title="run"><img class="icon-run" width="100" src="/static/img/turtle-run.png" alt="run" /></a>
@@ -15,16 +11,14 @@
 	
 </div>
 
-
-
 <h2 style="text-align:center">Code! .. Draw! .. Stitch!</h2>
-	
-	<div>
-<%
-	render("views/carousel", { collection = 'category', title = 'Featured', category = 'Featured'})
-	render("views/carousel", { collection = 'newest', title = 'Newest' })
-	render("views/carousel", { collection = 'category', title = 'Getting Started', category = 'Getting Started'})
-	render("views/carousel", { collection = 'popular', title = 'Popular' })
-%>
+
+<div>
+  <% render("views/carousel", { collection = 'category', title = 'Featured', category = 'Featured'}) %>
+  <% render("views/carousel", { collection = 'newest', title = 'Newest' }) %>
+  <% render("views/carousel", { collection = 'category', title = 'Getting Started', category = 'Getting Started'}) %>
+
+  <% render("views/twitter2") %>  
+
 </div>
 
