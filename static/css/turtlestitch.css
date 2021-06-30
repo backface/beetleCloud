@@ -501,7 +501,7 @@ img.fluid {
   .brandtext {display:none}
 }
 
-@media(max-width:970px) {
+@media(max-width:1024px) {
 	.navbar ul { margin-right:0}
 	.navbar .search {margin-left:0px;}
 	.navbar .search-results {margin-left:0}
