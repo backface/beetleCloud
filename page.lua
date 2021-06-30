@@ -35,8 +35,7 @@ app:get('pageview', '/page/:slug', function(self)
 	 
     if self.page then		
 		self.content = self.page.content
-		self.title = self.page.title
-		page_title = self.title		
+		self.title = self.page.title	
 		return { render = "pageview" } 
 	else
 		return { render = "notfound" } 
