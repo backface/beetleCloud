@@ -7,7 +7,7 @@
     "profile": {"screenName": 'turtlestitch'},
     "domId": 'tweets',
     "maxTweets": 3,
-    "enableLinks": true, 
+    "enableLinks": true,
     "showUser": false,
     "showTime": true,
     "showImages": true,
@@ -18,7 +18,7 @@
   twitterFetcher.fetch(config);
 
   function populate(tweets){
-    var html = '';    
+    var html = '';
     for (var i = 0, lgth = tweets.length; i < lgth ; i++) {
       var tweetObject = tweets[i];
       html += '<div class="tw">';
@@ -29,8 +29,8 @@
       html += '</span>';
       html += '</blockquote>';
       html += '</div>';
-    }    
-    document.getElementById('tweets').innerHTML = html;   
+    }
+    document.getElementById('tweets').innerHTML = html;
     var script = document.createElement('script');
     script.src = "https://platform.twitter.com/widgets.js";
     document.head.appendChild(script);

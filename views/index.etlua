@@ -8,7 +8,7 @@
 		<a class="btn btn-lg btn-run" href="run" role="button">Run TurtleStitch!</a></br>
 		<div style="margin-top:-30px;"><a href="/page/tutorials/" style="text-decoration:underline;padding-left:100px;color:black">or watch the tutorials</a></div>
 	</p></br>
-	
+
 </div>
 
 <h2 style="text-align:center">Code! .. Draw! .. Stitch!</h2>
@@ -18,7 +18,6 @@
   <% render("views/carousel", { collection = 'newest', title = 'Newest' }) %>
   <% render("views/carousel", { collection = 'category', title = 'Getting Started', category = 'Getting Started'}) %>
 
-  <% render("views/twitter2") %>  
+  <% render("views/twitter") %>  
 
 </div>
-
