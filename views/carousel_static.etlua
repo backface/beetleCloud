@@ -1,0 +1,72 @@
+<% local util = require 'lapis.util' %>
+
+
+<div class="jumbotron carousel_<%= title:gsub(" ", "_") %> mini-carousel hidden">
+
+    <div class="title">
+        <span class="title-text"><%= title %></span>
+        <span class="show-all"><a href="<%= linkall %>">Show all</a></span>
+    </div>
+
+    <div class="projects slider">
+		<% for i, p in pairs(projects) do %>
+        <div class="project  ">
+            <a href="/users/<%= util.escape(p.username) %>/projects/<%= util.escape(p.projectname) %>"><img class="thumbnail" src="<%= p.thumbnail %>" alt="" /></a>
+            <a href="/users/<%= util.escape(p.username) %>/projects/<%= util.escape(p.projectname) %>" class="name ellipsis"><%= p.projectname %></a> by
+            <span class="author"><a href="/users/<%= util.escape(p.username) %>"><%= p.username %></a></span>
+        </div>
+        <% end %>
+    </div>
+
+
+    <script>
+		$('.carousel_<%= title:gsub(" ", "_") %>').hide();
+		$(document).ready(function(){
+			$('.carousel_<%= title:gsub(" ", "_") %> .projects')
+			.on('init', function(slick) {
+				console.log('fired!');
+				$('.carousel_<%= title:gsub(" ", "_") %>').fadeIn(1500);
+				$('.carousel_<%= title:gsub(" ", "_") %>').removeClass('hidden');
+			})
+			
+			.slick({
+                lazyLoad: 'ondemand',
+				dots: false,
+				infinite: true,
+				speed: 300,
+				slidesToShow: 5,
+				slidesToScroll: 5,
+				prevArrow: '<div class="slick-prev" onclick="prev_<%= id %>();"><i class="fa fa-angle-left" aria-hidden="true"></i></div>',
+				nextArrow: '<div class="slick-next" onclick="next_<%= id %>();"><i class="fa fa-arrow-circle-right"></i></div>',
+				responsive: [
+					{
+					  breakpoint: 1024,
+					  settings: {
+						slidesToShow: 3,
+						slidesToScroll: 3,
+					  }
+					},
+					{
+					  breakpoint: 600,
+					  settings: {
+						slidesToShow: 2,
+						slidesToScroll: 2
+					  }
+					},
+					{
+					  breakpoint: 480,
+					  settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					  }
+					}
+				]
+			});
+
+			
+
+		});
+
+    </script>
+
+</div>
