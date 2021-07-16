@@ -34,11 +34,10 @@
         %>
 
 			<li><a href="/signup">Sign Up</a></li>
-			<li><a href="/login">Log In</a></li>
+			<li><a href="/login?from=<%= req.parsed_url.path %>">Log In</a></li>
         <%
             else
         %>
-
 			<li class="dropdown">
 				  <a href="#" class="dropdown-toggle username"
 					data-toggle="dropdown" role="button"

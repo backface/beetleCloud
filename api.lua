@@ -290,7 +290,7 @@ app:match('login', '/api/users/login', respond_to({
         
 		if (user == nil) then
       if comesFromWebClient then
-          return { redirect_to = '/login?fail=true&reason=No%20such%20user' }
+          return { redirect_to = '/login?fail=true&reason=No%20such%20user&from=' .. self.params.from }
       else
           return errorResponse('invalid username')
       end    
@@ -298,7 +298,7 @@ app:match('login', '/api/users/login', respond_to({
   
     elseif not user.confirmed then
         if comesFromWebClient then
-          return { redirect_to = '/login?fail=true&reason=unconfirmed%20user' }
+          return { redirect_to = '/login?fail=true&reason=unconfirmed%20user&from=' .. self.params.from  }
         else
           return errorResponse('user unconfirmed')
         end
@@ -309,7 +309,7 @@ app:match('login', '/api/users/login', respond_to({
       self.session.email = user.email
       self.session.gravatar = md5.sumhexa(user.email)
       if comesFromWebClient then
-          return { redirect_to = '/' }
+          return { redirect_to = self.params.from  }
       else
           return jsonResponse({
               text = 'User ' .. self.params.username .. ' logged in'
@@ -317,7 +317,7 @@ app:match('login', '/api/users/login', respond_to({
       end
     else
       if comesFromWebClient then
-          return { redirect_to = '/login?fail=true&reason=invalid%20password' }
+          return { redirect_to = '/login?fail=true&reason=invalid%20password&from=' .. self.params.from  }
       else
           return errorResponse('invalid password')
       end

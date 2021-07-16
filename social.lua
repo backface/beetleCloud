@@ -48,12 +48,12 @@ app:get('/1', function(self)
         featured  = 'projectName, username, thumbnail from projects where isPublic = true and categories ilike \'%featured%\' order by id desc',
         gettingstarted = 'projectName, username, thumbnail from projects where isPublic = true and categories ilike \'%Getting Started%\' order by id desc'
     }
-   
-	newest = db.select(query['newest'] .. ' limit ? offset ?', 15,0)  
+
+	newest = db.select(query['newest'] .. ' limit ? offset ?', 15,0)
 	popular = db.select(query['popular'] .. ' limit ? offset ?', 15,0)
 	featured = db.select(query['featured'] .. ' limit ? offset ?', 15,0)
 	gettingstarted = db.select(query['gettingstarted'] .. ' limit ? offset ?', 15,0)
-	
+
   return { render = 'index2' }
 end)
 
@@ -80,6 +80,7 @@ end)
 
 app:get('/login', function(self)
     self.fail = self.params.fail
+    self.from = self.params.from
     self.page_title = "Login"
     return { render = 'login' }
 end)
@@ -159,7 +160,7 @@ app:get('/users/:username/projects/:projectname', function(self)
     self.visitor = Users:find(self.session.username)
     self.project = Projects:find(self.params.username, self.params.projectname)
     self.s = ''
-	
+
     if (self.project and
         (self.project.ispublic or (self.visitor and self.visitor.isadmin) or
             self.session.username == self.project.username)) then
@@ -187,28 +188,28 @@ app:get('/users/:username/projects/:projectname', function(self)
         self.project:update({
             views = (self.project.views or 0) + 1
         })
-        
+
         -- if (self.project.remixhistory) then
-		--	history = explode(";",self.project.remixhistory)		
+		--	history = explode(";",self.project.remixhistory)
 		--	if (history) then
 		--		orig = explode(":",history[1])
 		--		origname = orig[2]
 		--		origcreator = orig[1]
 		--	end
 		-- end
-		
+
 		if self.project.tags then
 			self.tags = explode_and_trim(',', self.project.tags or ',')
 		else
 			self.tags = nil
 		end
-		
-        
-        if ( self.project.origname and 
-			 self.project.origcreator and 
+
+
+        if ( self.project.origname and
+			 self.project.origcreator and
 			 self.project.origcreator ~= "anonymous" and
 			(self.project.origname ~= self.project.projectname or self.project.origcreator ~= self.project.username)
-			
+
         ) then
 			self.project.origProject = Projects:find(
 				self.project.origcreator,
@@ -230,8 +231,8 @@ app:get('/users/:username/projects/:projectname', function(self)
 			self.project.username)
 
 		self.page_title =  self.params.projectname
-		
-		
+
+
         return { render = 'project' }
     else
         return { render = 'notfound' }

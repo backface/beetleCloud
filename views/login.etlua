@@ -12,8 +12,8 @@
 
 <% end %>
 
-
 <form class="form-horizontal" method="POST" action="/api/users/login">
+  <input type="hidden" name="from" id="from" value="<%= from %>"/>
   <div class="form-group">
 	<div class="col-md-3">
 	  <div class="input-group">
@@ -22,24 +22,24 @@
 		</div>
 		<input type="text" required class="form-control" name="username" id="username" placeholder="Username" autofocus />
 	  </div>
-
 	  <div class="input-group">
 		<div class="input-group-addon">
 		  <span class="glyphicon glyphicon-lock"></span>
 		</div>
 		<input type="password" required class="form-control" name="password" id="password" placeholder="Password" />
+
 	  </div>
-	</div> 
-  </div>
-  
-  <div class="form-group">
-	<div class="col-md-3">  
-	   <div class="btn-group">    
-		<button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>     
-	  </div> 
 	</div>
   </div>
- 
+
+  <div class="form-group">
+	<div class="col-md-3">
+	   <div class="btn-group">
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+	  </div>
+	</div>
+  </div>
+
   <p><a href="/forgot_password">Forgot your Password?</a></p>
 </form>
 
@@ -49,7 +49,7 @@
 		$("input").keyup(function () {
 			var formGroup = $(this).parents(".form-group");
 			var glyphicon = formGroup.find(".glyphicon");
-			
+
 			if (this.checkValidity()) {
 				formGroup.addClass("has-success").removeClass("has-error");
 				glyphicon.addClass("glyphicon-ok").removeClass("glyphicon-remove");
@@ -57,7 +57,7 @@
 				formGroup.addClass("has-error").removeClass("has-success");
 				glyphicon.addClass("glyphicon-remove").removeClass("glyphicon-ok");
 			}
-			
+
 	});
-});		
+});
 </script>
